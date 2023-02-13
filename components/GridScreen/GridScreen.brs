@@ -3,35 +3,22 @@ sub Init()
     m.rowList.SetFocus(true)
     ' Label with item description.
     m.descriptionLabel = m.top.FindNode("descriptionLabel")
+    ' observe visible field so we can see GridScreen change visibility
+    m.top.ObserveField("visible", "OnVisibleChange")
     ' Label with item title.
     m.titleLabel = m.top.FindNode("titleLabel")
     ' Observe rowItemFocused so we can know when another item of rowList will be focused.
     m.rowList.ObserveField("rowItemFocused", "OnItemFocused")
 end sub
 
-sub OnItemFocused() ' Invoked when another item is focused
-    focusedIndex = m.rowList.rowItemFocused ' Get position of focused item.
-    row = m.rowList.content.GetChild(focusedIndex[0]) ' Get all items of row.
-    item = row.GetChild(focusedIndex[1]) ' Get focused item.
-    ' Update description label with description of focused item.
-    m.descriptionLabel.text = item.description
-    ' Update title label with title of focused item.
-    m.titleLabel.text = item.title
-    ' Adding length of playback to the title if item length field was populated.
-    if item.length <> invalid
-        m.titleLabel.text += " | " + GetTime(item.length)
+sub OnVisibleChange()
+    if m.top.visible = true
+        m.rowList.SetFocus(true) ' set focus to RowList if GridScreen is visible
     end if
 end sub
 
-' This method convert seconds to mm:ss format
-' GetTime(138) returns 2:18
-function GetTime(length as Integer) as String
-    minutes = (length \ 60).ToStr()
-    seconds = length MOD 60
-    if seconds < 10
-        seconds = "0" + seconds.ToStr()
-    else
-        seconds = seconds.ToStr()
-    end if
-    return minutes + ":" + seconds
-end function
+sub OnItemFocused() ' Invoked when another item is focused
+    focusedIndex = m.rowList.rowItemFocused ' Get position of focused item.
+    row = m.rowList.content.GetChild(focusedIndex[0]) ' Get all items of row.
+    row.GetChild(focusedIndex[1]) ' Get focused item.
+end sub

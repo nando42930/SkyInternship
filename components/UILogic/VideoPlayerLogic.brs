@@ -1,25 +1,18 @@
-sub ShowVideoScreen(content as Object, itemIndex as Integer)
+sub ShowVideoScreen(rowContent as Object, selectedItem as Integer, isSeries = false as Boolean)
+    m.isSeries = isSeries
     m.videoPlayer = CreateObject("roSGNode", "Video") ' create new instance of video node for each playback
+    m.selectedIndex[1] = selectedItem
     ' we can't set index of content which should start firstly in playlist mode.
     ' for cases when user select second, third etc. item in the row we use the following workaround
-    if itemIndex <> 0 ' check if user select any but first item on the row
-        numOfChildren = content.GetChildCount() ' get number of row items
-        ' populate children array only with items started from selected one.
-        ' example: row has 3 items. user select second one so we must take just second and third items.
-        children = content.GetChildren(numOfChildren - itemIndex, itemIndex)
-        childrenClone = []
-        ' go through each item of children array and clone them.
-        for each child in children
-        ' we need to clone item node because it will be damaged in case of video node code invalidation
-            childrenClone.Push(child.Clone(false))
-        end for
+    if selectedItem <> 0 ' check if user select any but first item on the row
+        childrenClone = CloneChildren(rowContent, selectedItem)
         ' create new parent node for our cloned items
-        node = CreateObject("roSGNode", "ContentNode")
-        node.Update({ children: childrenClone }, true)
-        m.videoPlayer.content = node ' set node with children to video node content
+        rowNode = CreateObject("roSGNode", "ContentNode")
+        rowNode.Update({ children: childrenClone }, true)
+        m.videoPlayer.content = rowNode ' set node with children to video node content
     else
         ' if playback must start from first item we clone all row node
-        m.videoPlayer.content = content.Clone(true)
+        m.videoPlayer.content = rowContent.Clone(true)
     end if
     m.videoPlayer.contentIsPlaylist = true ' enable video playlist (a sequence of videos to be played)
     ShowScreen(m.videoPlayer) ' show video screen
@@ -43,8 +36,15 @@ sub OnVideoVisibleChange() ' invoked when video node visibility is changed
         m.videoPlayer.control = "stop" ' stop playback
         ' clear video player content, for proper start of next video player
         m.videoPlayer.content = invalid
-        m.GridScreen.SetFocus(true) ' return focus to grid screen
+        screen = GetCurrentScreen()
+        screen.SetFocus(true) ' return focus to details screen
+        newIndex = m.selectedIndex[1]
+        if m.isSeries = true
+            m.isSeries = false
+        else
+            newIndex += currentIndex
+        end if
         ' navigate to the last played item
-        m.GridScreen.jumpToRowItem = [m.selectedIndex[0], currentIndex + m.selectedIndex[1]]
+        screen.jumpToItem = newIndex
     end if
 end sub

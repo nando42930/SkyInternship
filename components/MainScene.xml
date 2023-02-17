@@ -6,6 +6,8 @@
     <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/VideoPlayerLogic.brs" />
     <script type="text/brightscript" uri="UILogic/DetailsScreenLogic.brs" />
+    <script type="text/brightscript" uri="UILogic/EpisodesScreenLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
     <children>
         <Overhang
             id="overhang"

@@ -15,15 +15,44 @@ sub OnButtonSelected(event) ' invoked when button in DetailsScreen is pressed
     selectedItem = details.itemFocused
     if buttonIndex = 0 ' check if "Play" button is pressed
         ' create Video node and start playback
-        ShowVideoScreen(content, selectedItem)
+        HandlePlayButton(content, selectedItem)
+    else if buttonIndex = 1 ' check if "See all episodes" button is pressed
+        ' create EpisodesScreen instance and show it
+        ShowEpisodesScreen(content, selectedItem)
     end if
 end sub
 
 sub OnDetailsScreenVisibilityChanged(event as object) ' invoked when DetailsScreen "visible" field is changed
     visible = event.GetData()
     detailsScreen = event.GetRoSGNode()
-    ' update GridScreen's focus when navigate back from DetailsScreen
+    currentScreen = GetCurrentScreen()
+    screenType = currentScreen.SubType()
     if visible = false
-        m.GridScreen.jumpToRowItem = [m.selectedIndex[0], detailsScreen.itemFocused]
+        if screenType = "GridScreen"
+            ' update GridScreen's focus when navigate back from DetailsScreen
+            currentScreen.jumpToRowItem = [m.selectedIndex[0], detailsScreen.itemFocused]
+        else if screenType = "EpisodesScreen"
+            ' update EpisodesScreen's focus when navigate back from DetailsScreen
+            content = detailsScreen.content.GetChild(detailsScreen.itemFocused)
+            currentScreen.jumpToItem = content.numEpisodes
+        end if
     end if
+end sub
+
+sub HandlePlayButton(content as Object, selectedItem as Integer)
+    itemContent = content.GetChild(selectedItem)
+    ' if content child is serial with seasons
+    ' we will set all episodes of serial to playlist
+    if itemContent.mediaType = "series"
+        children = []
+        ' clone all episodes of each season
+        for each season in itemContent.getChildren(-1, 0)
+            children.Append(CloneChildren(season))
+        end for
+        ' create a Video node and start playback
+        ShowVideoScreen(content, 0, true)
+    else
+        ShowVideoScreen(content, selectedItem)
+    end if
+    m.selectedIndex[1] = selectedItem ' store index of selected item
 end sub

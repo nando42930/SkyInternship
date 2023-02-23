@@ -10,7 +10,7 @@
         <Rectangle
             width="650"
             height="160"
-            color="0x202020ff"
+            color="0x202020FF"
         />
         <LayoutGroup layoutDirection="horiz" itemSpacings="[10]" vertAlignment="custom">
                 <Poster id="poster"

@@ -12,13 +12,16 @@ sub OnButtonSelected(event) ' invoked when button in DetailsScreen is pressed
     details = event.GetRoSGNode()
     content = details.content
     buttonIndex = event.GetData() ' index of selected button
+    button = details.buttons.GetChild(buttonIndex)
     selectedItem = details.itemFocused
-    if buttonIndex = 0 ' check if "Play" button is pressed
+    if button.id = "Play" ' check if "Play" button is pressed
         ' create Video node and start playback
         HandlePlayButton(content, selectedItem)
-    else if buttonIndex = 1 ' check if "See all episodes" button is pressed
+    else if button.id = "See all episodes" ' check if "See all episodes" button is pressed
         ' create EpisodesScreen instance and show it
-        ShowEpisodesScreen(content, selectedItem)
+        ShowEpisodesScreen(content.GetChild(selectedItem))
+    else if button.id = "Continue"
+        HandlePlayButton(content, selectedItem, true)
     end if
 end sub
 
@@ -39,7 +42,7 @@ sub OnDetailsScreenVisibilityChanged(event as object) ' invoked when DetailsScre
     end if
 end sub
 
-sub HandlePlayButton(content as Object, selectedItem as Integer)
+sub HandlePlayButton(content as Object, selectedItem as Integer, isResume = false as Boolean)
     itemContent = content.GetChild(selectedItem)
     ' if content child is serial with seasons
     ' we will set all episodes of serial to playlist
@@ -49,10 +52,35 @@ sub HandlePlayButton(content as Object, selectedItem as Integer)
         for each season in itemContent.getChildren(-1, 0)
             children.Append(CloneChildren(season))
         end for
+        ' create new node and set all episodes of serial
+        node = CreateObject("roSGNode", "ContentNode")
+        node.id = itemContent.id
+        node.Update({ children: children}, true)
+        index = 0
+        if isResume = true
+            smartBookmarks = MasterChannelSmartBookmarks()
+            ' episodeId contains id of the episode that should be played
+            episodeId = smartBookmarks.GetSmartBookmarkForSeries(itemContent.id)
+            if episodeId <> invalid and episodeId <> ""
+                episode = FindNodeById(content, episodeId)
+                if episode <> invalid
+                    index = episode.numEpisodes
+                end if
+            end if
+        else
+            episode = node.GetChild(0)
+            episode.bookmarkPosition = 0
+        end if
         ' create a Video node and start playback
-        ShowVideoScreen(content, 0, true)
+        StartPlayback(node, index, true)
     else
-        ShowVideoScreen(content, selectedItem)
+        if isResume = false
+            itemContent.bookmarkPosition = 0
+        end if
+        StartPlayback(content, selectedItem)
+    end if
+    if m.selectedIndex = invalid
+        m.selectedIndex = [0, 0]
     end if
     m.selectedIndex[1] = selectedItem ' store index of selected item
 end sub

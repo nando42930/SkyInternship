@@ -5,7 +5,7 @@
     <script type="text/brightscript" uri="pkg:/source/utils.brs" />
     <interface>
         <!-- Content fields -->
-        <field id="content" type="node" alwaysNotify="true" onChange="onContentChange" />
+        <field id="content" type="node" alwaysNotify="true" onChange="OnContentChange" />
         <!-- @ReadOnly -->
         <!-- Array with 2 ints - section and item in current section that was selected -->
         <field id="selectedItem" type="vector2d" alwaysNotify="true" />

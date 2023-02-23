@@ -6,6 +6,7 @@
     </interface>
     <script type="text/brightscript" uri="RowListItemComponent.brs"/>
     <children>
+        <!-- Set loadWidth/loadHeight and loadDisplayMode for better performance -->
         <Poster
             id="poster"
             loadDisplayMode="scaleToFit"

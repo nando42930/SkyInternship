@@ -29,6 +29,36 @@ sub CloseScreen(node as Object)
     end if
 end sub
 
+sub AddScreen(node as Object)
+    m.top.AppendChild(node) ' add new screen to scene
+    m.screenStack.Push(node) ' add new screen to the screen stack
+end sub
+
+sub ClearScreenStack()
+    if m.screenStack.Count() > 1
+        while m.screenStack.Count() > 1
+            last = m.screenStack.Pop() ' remove screen from ScreenStack
+            if last.visible = true
+                last.visible = false ' hide screen
+            end if
+            m.top.RemoveChild(last)
+        end while
+    else
+        m.screenStack.Peek().visible = false ' take current screen from screen stack, but don't delete it
+    end if
+end sub
+
+function IsScreenInScreenStack(node as Object) as Boolean
+    ' check if screen stack contains specified node
+    for each screen in m.screenStack
+        result = screen.IsSameNode(node)
+        if result = true
+            return true
+        end if
+    end for
+    return false
+end function
+
 function GetCurrentScreen()
     return m.screenStack.Peek()
 end function

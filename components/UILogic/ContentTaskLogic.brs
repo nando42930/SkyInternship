@@ -10,4 +10,9 @@ sub OnMainContentLoaded() 'Invoked when content is ready to be used.
     m.GridScreen.SetFocus(true) 'Set focus to GridScreen.
     m.loadingIndicator.visible = false 'Hide loading indicator because content was retrieved.
     m.GridScreen.content = m.contentTask.content 'Populate GridScreen with content.
+
+    args = m.top.launchArgs
+    if args <> invalid and ValidateDeepLink(args)
+        DeepLink(m.contentTask.content, args.mediaType, args.contentId)
+    end if
 end sub

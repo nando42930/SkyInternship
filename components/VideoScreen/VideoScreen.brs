@@ -1,16 +1,18 @@
-' Entry point of VideoScreen
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
+
+' entry point of videoScreen
 function Init()
-    ' Set rectangle fields
+    ' set rectangle fields
     m.top.width = 1280
     m.top.height = 720
     m.top.color="0x000000"
-    ' Store reference for playerTask so we can use it in other functions
+    ' store reference for playerTask so we can use it in other functions
     m.playerTask = m.top.FindNode("PlayerTask")
-    m.playerTask.ObserveField("state", "OnPlayerTaskStateChange")   ' Close screen once exited
+    m.playerTask.ObserveField("state", "OnPlayerTaskStateChange")   ' close screen once exited
     m.top.ObserveField("visible", "OnVisibleChanged")
 end function
 
-sub OnVisibleChanged(event as Object) ' Invoked when VideoScreen visibility is changed
+sub OnVisibleChanged(event as Object) ' invoked when VideoScreen visibility is changed
     visible = event.GetData()
     ' Video node content must be invalidated if videoScreen is closed but playerTask still running
     if visible = false and m.playerTask <> invalid
@@ -30,12 +32,12 @@ sub OnVisibleChanged(event as Object) ' Invoked when VideoScreen visibility is c
     end if
 end sub
 
-sub OnIndexChanged(event as Object) ' Invoked when "startIndex" field is changed
+sub OnIndexChanged(event as Object) ' invoked when "startIndex" field is changed
     content = m.top.content
     index = event.GetData()
-    ' Check if content was populated
+    ' check if content was populated
     if content <> invalid
-        ' Set playlist data and start task
+        ' set playlist data and start task
         m.playerTask.content = content
         m.playerTask.startIndex = index
         m.playerTask.isSeries = m.top.isSeries
@@ -43,14 +45,23 @@ sub OnIndexChanged(event as Object) ' Invoked when "startIndex" field is changed
     end if
 end sub
 
+' close videoScreen once playerTask finished or stopped
+sub OnPlayerTaskStateChange(event as Object)
+    state = event.GetData()
+    if (state = "done" or state = "stop") and m.playerTask <> invalid
+        m.playerTask = invalid
+        m.top.close = true
+    end if
+end sub
+
 ' The OnKeyEvent() function receives remote control key events
 function OnKeyEvent(key as String, press as Boolean) as Boolean
     result = false
     if press
-        ' Handle "back" key press
+        ' handle "back" key press
         if key = "back" and m.playerTask <> invalid
-            ' We should stop playback and close this screen when user press "back" button
-            m.playerTask.control = "STOP" ' As a result OnPlayerTaskStateChange is invoked
+            ' we should stop playback and close this screen when user press "back" button
+            m.playerTask.control = "STOP" ' as a result OnPlayerTaskStateChange is invoked
             result = true
         end if
     end if

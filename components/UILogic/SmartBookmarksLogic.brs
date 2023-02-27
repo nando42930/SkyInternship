@@ -1,11 +1,12 @@
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
 ' Return all object with methods for smart bookmark handling
 function MasterChannelSmartBookmarks()
     this = {
-        LoadSmartBookmarks:             LoadSmartBookmarks
-        SaveSmartBookmarks:             SaveSmartBookmarks
-        UpdateSmartBookmarkForSeries:   UpdateSmartBookmarkForSeries
-        GetSmartBookmarkForSeries:      GetSmartBookmarkForSeries
-        RemoveSmartBookmarkForSeries:   RemoveSmartBookmarkForSeries
+        LoadSmartBookmarks: LoadSmartBookmarks
+        SaveSmartBookmarks: SaveSmartBookmarks
+        UpdateSmartBookmarkForSeries: UpdateSmartBookmarkForSeries
+        GetSmartBookmarkForSeries: GetSmartBookmarkForSeries
+        RemoveSmartBookmarkForSeries: RemoveSmartBookmarkForSeries
     }
     return this
 end function
@@ -21,15 +22,15 @@ end sub
 
 ' Save all smart bookmarks to the local registry
 sub SaveSmartBookmarks()
-    RegWrite("smartBookmarks", "master_channel_bookmarks")
+    RegWrite("smartBookmarks", FormatJson(m.smartBookmarks), "master_channel_bookmarks")
 end sub
 
-' Update smart bookmak for specified series
+' Update smart bookmark for specified series
 sub UpdateSmartBookmarkForSeries(id, episodeId)
     if id = invalid or episodeId = invalid
         return
     end if
-    ' Read smart bookmarks from registry if needed
+    ' Read smart bookmarks from registry if neaded
     if m.smartBookmarks = invalid
         m.LoadSmartBookmarks()
     end if
@@ -38,24 +39,24 @@ sub UpdateSmartBookmarkForSeries(id, episodeId)
     for each bookmark in m.smartBookmarks
         if bookmark.id = id
             bookmark.episodeId = episodeId
+            success = true
             exit for
         end if
     end for
     ' add new smart bookmark if bookmark for specified series doesn't exist
     if not success
         m.smartBookmarks.Push({
-            id:         id
-            episodeId:  episodeId
+            id: id
+            episodeId: episodeId
         })
     end if
     ' save last changes
     m.SaveSmartBookmarks()
 end sub
-
 ' Return last played episode id for specified series
 function GetSmartBookmarkForSeries(id as String) as String
     result = ""
-    ' Read smart bookmarks from registry if needed
+    ' Read smart bookmarks from registry if neaded
     if m.smartBookmarks = invalid
         m.LoadSmartBookmarks()
     end if
@@ -81,6 +82,6 @@ sub RemoveSmartBookmarkForSeries(id as String)
             exit for
         end if
     end for
-    ' save last update to local registry
+    ' save last update to the local registry
     m.SaveSmartBookmarks()
 end sub

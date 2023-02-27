@@ -1,12 +1,14 @@
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
+
 ' We need to include this library only in task which handles RAF.
 Library "Roku_Ads.brs"
 
 sub init()
-    m.top.functionName = "PlayContentWithAds"   ' Function to run by task
+    m.top.functionName = "PlayContentWithAds"   ' func to run by task
     m.top.id = "PlayerTask"
 end sub
 
-' Here we retrieve all ads and configure it to our playback
+' here we retrieve all ads and configure it to our playback
 sub PlayContentWithAds()
     ' `parentNode` is the node to which the stitched stream can be attached (passed as 2nd argument of renderStitchedStream)
     parentNode = m.top.GetParent()
@@ -30,9 +32,9 @@ sub PlayContentWithAds()
     index = m.top.startIndex - 1
     itemsCount = items.Count()
     while keepPlay
-        ' Check if playlist isn't complete
+        ' check if playlist isn't complete
         if itemsCount - 1 > index
-            ' We need to give parentNode a focus in order to handle "back" button key press during ads retrieving
+            ' we need to give parentNode a focus in order to handle "back" button key press during ads retrieving
             parentNode.SetFocus(true)
             index ++
             item = items[index] ' contentNode of the video which should be played next
@@ -44,15 +46,15 @@ sub PlayContentWithAds()
             if item.categories <> invalid
                 RAF.SetContentGenre(item.categories)
             end if
-            RAF.SetContentLength(int(item.length)) ' In seconds
-            adPods = RAF.GetAds() ' Ads retrieving
-            m.top.lastIndex = index ' Save the index of last played item to navigate to appropriate detailsScreen
-            ' Combine video and ads into a single playlist
+            RAF.SetContentLength(int(item.length)) ' in seconds
+            adPods = RAF.GetAds() ' ads retrieving
+            m.top.lastIndex = index ' save the index of last played item to navigate to appropriate detailsScreen
+            ' combine video and ads into a single playlist
             csasStream = RAF.constructStitchedStream(item, adPods)
             if m.top.isSeries = true
                 smartBookmarks.UpdateSmartBookmarkForSeries(content.id, item.id)
             end if
-            ' Render the stitched stream
+            ' render the stitched stream
             keepPlay = RAF.renderStitchedStream(csasStream, parentNode)
             if keepPlay = false
                 bookmarks.UpdateBookmarkForVideo(item, csasStream.position)

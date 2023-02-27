@@ -1,4 +1,6 @@
-function ShowEpisodesScreen(content as Object, itemIndex = 0 as Integer)
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
+
+function ShowEpisodesScreen(content as Object, itemIndex = 0 as Integer) as Object
     ' create instance of the EpisodesScreen
     episodesScreen = CreateObject("roSGNode", "EpisodesScreen")
     ' observe selectedItem field so we can know which episode is selected

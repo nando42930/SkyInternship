@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="GridScreen" extends="Group" initialFocus="RowList">
-    <script type="text/brightscript" uri="GridScreen.brs"/>
-    <script type="text/brightscript" uri="pkg:/source/utils.brs"/>
-    <interface>
+<!--********** Copyright 2020 Roku Corp.  All Rights Reserved. **********-->
+
+<component name="GridScreen" extends="Group"  initialFocus="RowList">
+    <script type="text/brightscript" uri="GridScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+	<interface>
         <!-- Specifies the content for the Grid -->
         <field id="content" type="node" alias="RowList.content" />
-        <field id="rowItemSelected" type="intarray" alwaysNotify="true" alias="RowList.rowItemSelected" />
+        <field id="rowItemSelected" type="intarray" alwaysnotify="true" alias="RowList.rowItemSelected" />
         <field id="jumpToRowItem" type="intarray" alias="RowList.jumpToRowItem" />
     </interface>
     <children>
-        <!-- <ButtonGroup
-            buttons="[Browse, Movies, TV Shows, Sports, WWE]"
-            focusButton="0"
-            textColor="0x808080"
-        /> -->
+        <LayoutGroup layoutDirection="horiz" horizAlign="center" vertAlign="center">
+            <Poster uri="pkg:/images/Peacock2020_mgalt.png"/>
+            <ButtonGroup
+                id="buttonBar"
+                layoutDirection="horiz"
+                focusButton="0">
+                <Button text="Browse" iconUri="" focusedIconUri="" minWidth="138"></Button>
+                <Button text="Movies" iconUri="" focusedIconUri="" minWidth="130"></Button>
+                <Button text="TV Shows" iconUri="" focusedIconUri="" minWidth="167"></Button>
+                <Button text="Sports" iconUri="" focusedIconUri="" minWidth="127"></Button>
+                <Button text="WWE" iconUri="" focusedIconUri="" minWidth="118"></Button>
+                <!-- <Button iconUri="file:///pkg:/images/search-icon-vector.jpeg" minWidth="167" maxWidth="167"></Button> -->
+                <Button text="Search" iconUri="" focusedIconUri="" minWidth="130"></Button>
+            </ButtonGroup>
+        </LayoutGroup>
         <RowList
             itemComponentName="RowListItemComponent"
             id="rowList"
             numRows="3"
+            translation="[20,110]"
             rowitemSize="[[320, 180]]"
-            rowItemSpacing="[[20, 0]]"
-            itemSize="[1100, 270]"
-            focusXOffset="[50]"
-            rowfocusAnimationStyle="floatingFocus"
+            rowItemSpacing="[[5, 0]]"
+            itemSize="[1280, 185]"
             vertFocusAnimationStyle="floatingFocus"
+            focusBitmapUri="file:///pkg:/images/focus.9.png"
         />
     </children>
 </component>

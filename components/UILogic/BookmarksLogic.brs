@@ -1,3 +1,5 @@
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
+
 ' return object with all methods for bookmarks logic handling
 function MasterChannelBookmarks()
     this = {
@@ -25,12 +27,12 @@ sub SaveBookmarks()
     RegWrite("bookmarks", FormatJson(m.bookmarks), "master_channel_bookmarks")
 end sub
 
-' Update position for last played content
+' update position for last played content
 sub UpdateBookmarkForVideo(video as Object, position as Integer)
     if position = invalid or position <= 0 or video.id = invalid or video.mediaType = "series"
         return
     end if
-    ' Load bookmarks from local registry if needed
+    ' Load bookmarks from local registry if neaded
     if m.bookmarks = invalid
         m.LoadBookmarks()
     end if
@@ -38,7 +40,7 @@ sub UpdateBookmarkForVideo(video as Object, position as Integer)
     ' try to find previously stored bookmark for specified content and update it if bookmark exists
     for each bookmark in m.bookmarks
         if bookmark.id = video.id
-            bookmark.position = position
+            bookmark.position = position 
             success = true
             exit for
         end if
@@ -56,28 +58,27 @@ end sub
 ' return start position for specified video
 function GetBookmarkForVideo(video)
     result = 0
-    ' Load bookmarks from local registry if needed
+    ' Load bookmarks from local registry if neaded
     if m.bookmarks = invalid
         m.LoadBookmarks()
     end if
     ' try to find bookmark for specified video
     for each bookmark in m.bookmarks
         if bookmark.id = video.id
-            result = bookmark.position
-            exit for
+          result = bookmark.position
+          exit for
         end if
     end for
     ' start position in seconds
     return result
 end function
-
 ' remove bookmark if user finished video
 sub RemoveBookmarkForVideo(id as String)
-    ' Load bookmarks from local registry if needed
+    ' Load bookmarks from local registry if neaded
     if m.bookmarks = invalid
         m.LoadBookmarks()
     end if
-    ' try to find bookmark for specified video and delete it
+    ' try to find bookmark for specified video and delete it 
     for i = 0 to m.bookmarks.Count() - 1
         bookmark = m.bookmarks[i]
         if bookmark.id = id

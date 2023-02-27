@@ -1,3 +1,5 @@
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
+
 sub ShowDetailsScreen(content as Object, selectedItem as Integer)
     ' create new instance of details screen
     detailsScreen = CreateObject("roSGNode", "DetailsScreen")
@@ -8,24 +10,7 @@ sub ShowDetailsScreen(content as Object, selectedItem as Integer)
     ShowScreen(detailsScreen)
 end sub
 
-sub OnButtonSelected(event) ' invoked when button in DetailsScreen is pressed
-    details = event.GetRoSGNode()
-    content = details.content
-    buttonIndex = event.GetData() ' index of selected button
-    button = details.buttons.GetChild(buttonIndex)
-    selectedItem = details.itemFocused
-    if button.id = "Play" ' check if "Play" button is pressed
-        ' create Video node and start playback
-        HandlePlayButton(content, selectedItem)
-    else if button.id = "See all episodes" ' check if "See all episodes" button is pressed
-        ' create EpisodesScreen instance and show it
-        ShowEpisodesScreen(content.GetChild(selectedItem))
-    else if button.id = "Continue"
-        HandlePlayButton(content, selectedItem, true)
-    end if
-end sub
-
-sub OnDetailsScreenVisibilityChanged(event as object) ' invoked when DetailsScreen "visible" field is changed
+sub OnDetailsScreenVisibilityChanged(event as Object) ' invoked when DetailsScreen "visible" field is changed
     visible = event.GetData()
     detailsScreen = event.GetRoSGNode()
     currentScreen = GetCurrentScreen()
@@ -42,24 +27,41 @@ sub OnDetailsScreenVisibilityChanged(event as object) ' invoked when DetailsScre
     end if
 end sub
 
+sub OnButtonSelected(event) ' invoked when button in DetailsScreen is pressed
+    details = event.GetRoSGNode()
+    content = details.content
+    buttonIndex = event.getData() ' index of selected button
+    button = details.buttons.getChild(buttonIndex)
+    selectedItem = details.itemFocused
+    if button.id = "play" ' check if "Play" button is pressed
+        ' create Video node and start playback
+        HandlePlayButton(content, selectedItem)
+    else if button.id = "see all episodes" ' check if "See all episodes" button is pressed
+        ' create EpisodesScreen instance and show it
+        ShowEpisodesScreen(content.GetChild(selectedItem))
+    else if button.id = "continue"
+        HandlePlayButton(content, selectedItem, true)
+    end if
+end sub
+
 sub HandlePlayButton(content as Object, selectedItem as Integer, isResume = false as Boolean)
     itemContent = content.GetChild(selectedItem)
     ' if content child is serial with seasons
     ' we will set all episodes of serial to playlist
     if itemContent.mediaType = "series"
         children = []
-        ' clone all episodes of each season
+        ' clone all episodes of easch season
         for each season in itemContent.getChildren(-1, 0)
             children.Append(CloneChildren(season))
         end for
         ' create new node and set all episodes of serial
         node = CreateObject("roSGNode", "ContentNode")
         node.id = itemContent.id
-        node.Update({ children: children}, true)
+        node.Update({ children: children }, true)
         index = 0
         if isResume = true
             smartBookmarks = MasterChannelSmartBookmarks()
-            ' episodeId contains id of the episode that should be played
+            ' episodeId contains id of the episode which should be played
             episodeId = smartBookmarks.GetSmartBookmarkForSeries(itemContent.id)
             if episodeId <> invalid and episodeId <> ""
                 episode = FindNodeById(content, episodeId)
@@ -68,16 +70,16 @@ sub HandlePlayButton(content as Object, selectedItem as Integer, isResume = fals
                 end if
             end if
         else
-            episode = node.GetChild(0)
+            episode = node.getChild(0)
             episode.bookmarkPosition = 0
         end if
         ' create a Video node and start playback
-        StartPlayback(node, index, true)
+        CheckSubscriptionAndStartPlayback(node, index, true)
     else
         if isResume = false
             itemContent.bookmarkPosition = 0
         end if
-        StartPlayback(content, selectedItem)
+        CheckSubscriptionAndStartPlayback(content, selectedItem)
     end if
     if m.selectedIndex = invalid
         m.selectedIndex = [0, 0]

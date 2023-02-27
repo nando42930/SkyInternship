@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--********** Copyright 2020 Roku Corp.  All Rights Reserved. **********-->
+
 <component name="MainScene" extends="Scene">
     <interface>
         <field id="inputArgs" type="assocarray" onChange="OnInputDeepLinking" />
@@ -12,23 +14,18 @@
     <script type="text/brightscript" uri="UILogic/ContentTaskLogic.brs" />
     <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/EpisodesScreenLogic.brs" />
+    <script type="text/brightscript" uri="UILogic/SubscriptionLogic.brs" />
     <script type="text/brightscript" uri="UILogic/DeepLinkingLogic.brs" />
     <script type="text/brightscript" uri="UILogic/BookmarksLogic.brs" />
     <script type="text/brightscript" uri="UILogic/SmartBookmarksLogic.brs" />
     <children>
-        <!-- Overhang with Peacock logo -->
-        <Overhang
-            id="overhang"
-            showOptions="false"
-            showClock="false"
-            logoUri="file:///pkg:/images/Peacock2020_mgalt.png"
-        />
         <!-- LoadingIndicator should be visible only in case of waiting for content -->
         <Label
             id="loadingIndicator"
             text="Loading..."
             width="1280"
             height="720"
+            translation="[0, 0]"
             horizAlign="center"
             vertAlign="center"
             visible="false"

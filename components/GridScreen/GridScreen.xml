@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="GridScreen" extends="Group"  initialFocus="RowList">
+<component name="GridScreen" extends="Group"  initialFocus="buttons">
     <script type="text/brightscript" uri="GridScreen.brs" />
     <script type="text/brightscript" uri="pkg:/source/utils.brs" />
 	<interface>
@@ -8,22 +8,33 @@
         <field id="content" type="node" alias="RowList.content" />
         <field id="rowItemSelected" type="intarray" alwaysnotify="true" alias="RowList.rowItemSelected" />
         <field id="jumpToRowItem" type="intarray" alias="RowList.jumpToRowItem" />
+        <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
+        <field id="itemFocused" type="integer" alwaysNotify="true" />
+        <field id="buttonSelected" type="integer" alias="buttons.itemSelected" />
+        <field id="buttons" type="node" alias="buttons.content" />
     </interface>
     <children>
-        <LayoutGroup layoutDirection="horiz" horizAlign="center" vertAlign="center">
-            <Poster uri="pkg:/images/Peacock2020_mgalt.png"/>
-            <ButtonGroup
-                id="buttonBar"
-                layoutDirection="horiz"
-                focusButton="0">
-                <Button text="Browse" iconUri="" focusedIconUri="" minWidth="138"></Button>
-                <Button text="Movies" iconUri="" focusedIconUri="" minWidth="130"></Button>
-                <Button text="TV Shows" iconUri="" focusedIconUri="" minWidth="167"></Button>
-                <Button text="Sports" iconUri="" focusedIconUri="" minWidth="127"></Button>
-                <Button text="WWE" iconUri="" focusedIconUri="" minWidth="118"></Button>
-                <!-- <Button iconUri="file:///pkg:/images/search-icon-vector.jpeg" minWidth="167" maxWidth="167"></Button> -->
-                <Button text="Search" iconUri="" focusedIconUri="" minWidth="130"></Button>
-            </ButtonGroup>
+        <LayoutGroup layoutDirection="horiz" vertAlignment="center" translation="[0,45]">
+            <Poster uri="pkg:/images/PeacockLogo.png"/>
+                <MaskGroup
+                            id="maskGroup"
+                            maskUri="../../images/ButtonGradient.png"
+                            masksize="[1025, 55]"
+                            maskOffset="[500, 0]">
+                    <RowList
+                        id="buttons"
+                        itemSize="[1280,64]"
+                        focusBitmapUri="../../images/TileBorderHighlight1080p.9.png">
+                        <!-- rowItemSize="[[138,64], [130,64], [167,64], [127,64], [118,64], [130,64]]" -->
+                        <!-- <Button text="Browse" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="138"></Button>
+                        <Button text="Movies" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="130" translation="[138,0]"></Button>
+                        <Button text="TV Shows" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="167" translation="[268,0]"></Button>
+                        <Button text="Sports" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="127" translation="[435,0]"></Button>
+                        <Button text="WWE" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="118" translation="[562,0]"></Button>
+                        <Button text="Search" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="130" translation="[680,0]"></Button> -->
+                        <!-- <Button iconUri="file:///pkg:/images/search-icon-vector.jpeg" minWidth="167" maxWidth="167"></Button> -->
+                    </RowList>
+                </MaskGroup>
         </LayoutGroup>
         <RowList
             itemComponentName="RowListItemComponent"
@@ -34,7 +45,7 @@
             rowItemSpacing="[[5, 0]]"
             itemSize="[1280, 185]"
             vertFocusAnimationStyle="floatingFocus"
-            focusBitmapUri="file:///pkg:/images/focus.9.png"
+            focusBitmapUri="../../images/Focus.9.png"
         />
     </children>
 </component>

@@ -92,7 +92,7 @@ sub OnItemFocusedChanged(event as Object)' invoked when another item is focused
     if m.top.content.GetChildCount() > 0
         content = m.top.content.GetChild(focusedItem) ' get metadata of focused item
         SetDetailsContent(content) ' populate DetailsScreen with item metadata
-    end if 
+    end if
 end sub
 
 ' The OnKeyEvent() function receives remote control key events

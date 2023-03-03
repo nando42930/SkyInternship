@@ -15,6 +15,7 @@ sub ShowChannelRSGScreen(args as Object)
     ' every screen object must have a Scene node, or a node that derives from the Scene node
     scene = screen.CreateScene("MainScene")
     screen.Show() ' Init method in MainScene.brs is invoked
+    ' vscode_rdb_on_device_component_entry
     scene.launchArgs = args
     inputObject=createobject("roInput")
     inputObject.setmessageport(m.port)

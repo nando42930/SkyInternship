@@ -11,7 +11,6 @@ sub Init()
     ShowGridScreen()
     RunContentTask() ' retrieving content
     m.top.SignalBeacon("AppLaunchComplete")
-
     ' to handle Roku Pay we need to create channelStore object in the global node
     m.global.AddField("channelStore", "node", false)
     m.global.channelStore = CreateObject("roSGNode", "ChannelStore")

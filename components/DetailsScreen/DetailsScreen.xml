@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?> 
-<!--********** Copyright 2020 Roku Corp.  All Rights Reserved. **********--> 
+<?xml version="1.0" encoding="utf-8" ?>
 
 <component name="DetailsScreen" extends="Group" initialFocus="Buttons" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
     <script type="text/brightscript" uri="DetailsScreen.brs" />
@@ -13,7 +12,7 @@
         <!-- Manually focus on desired item. This field must be set after setting the content field. -->
         <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
         <!-- tells what item is currently focused  -->
-        <field id="itemFocused" type="integer" alwaysNotify="true" />     
+        <field id="itemFocused" type="integer" alwaysNotify="true" />
         <field id="buttonSelected" type="integer" alias="buttons.itemSelected" />
         <field id="buttons" type="node" alias="buttons.content" />
     </interface>

@@ -1,19 +1,13 @@
-' entry point of GridScreen
-' Note that we need to import this file in GridScreen.xml using relative path.
+' Entry point of GridScreen
+' Note that we need to import this file in GridScreen.xml using relative path
 sub Init()
-    ' observe "visible" so we can know when GridScreen change visibility
+    ' Observe "visible" field so we can know when GridScreen change visibility
     m.top.ObserveField("visible", "OnVisibleChange")
     m.rowList = m.top.FindNode("rowList")
-
-    m.buttonBar = m.top.FindNode("ButtonBar")
-    m.buttonBar.content = retrieveButtonBarContent()
-    m.buttonBar.ObserveField("itemSelected", "OnButtonBarItemSelected")
-    ' m.top.buttonBar.visible = true
-    ' m.top.buttonBar.content = retrieveButtonBarContent()
-    ' m.top.buttonBar.ObserveField("itemSelected", "OnButtonBarItemSelected")
+    m.buttonBar = m.top.FindNode("buttonBar")
 end sub
 
-function retrieveButtonBarContent() as Object
+function SetButtonBarContent() as Object
     buttonBarContent = CreateObject("roSGNode", "ContentNode")
     buttonBarContent.Update({
         children: [{
@@ -30,7 +24,6 @@ function retrieveButtonBarContent() as Object
             title: "Search"
         }]
     }, true)
-
     return buttonBarContent
 end function
 
@@ -38,26 +31,26 @@ sub OnButtonBarItemSelected(event as Object)
     ' This is where you can handle a selection event
 end sub
 
-sub onVisibleChange()' invoked when DetailsScreen visibility is changed
-    ' set focus for buttons list when DetailsScreen becomes visible
+sub OnVisibleChange()' Invoked when GridScreen visibility is changed
+    ' Set focus for button bar when GridScreen becomes visible
     if m.top.visible = true
-        m.buttons.SetFocus(true)
+        m.buttonBar.SetFocus(true)
     end if
 end sub
 
 sub SetButtons(buttons as Object)
     result = []
-    ' prepare array with button's titles
+    ' Prepare array with button's labels
     for each button in buttons
         result.push({title : button, id: LCase(button)})
     end for
-    m.buttons.content = ContentListToSimpleNode(result) ' populate buttons list
+    m.buttonBar.content = ContentListToSimpleNode(result) ' Populate buttons list
 end sub
 
-sub OnJumpToItem() ' invoked when jumpToItem field is populated
+sub OnJumpToItem() ' Invoked when jumpToItem field is populated
     content = m.top.content
-    ' check if jumpToItem field has valid value
-    ' it should be set within interval from 0 to content.Getchildcount()
+    ' Check if jumpToItem field has valid value
+    ' It should be set within interval from 0 to content.Getchildcount()
     if content <> invalid and m.top.jumpToItem >= 0 and content.GetChildCount() > m.top.jumpToItem
         m.top.itemFocused = m.top.jumpToItem
     end if
@@ -68,15 +61,15 @@ end sub
 function OnKeyEvent(key as String, pressed as Boolean) as Boolean
     handled = false
     if pressed
-        currentItem = m.top.itemFocused ' position of currently focused item
-        ' handle "left" button keypress
+        currentItem = m.top.itemFocused ' Index of currently focused item
+        ' Handle "left" button keypress
         if key = "left" and m.isContentList = true
-            ' navigate to the left item in case of "left" keypress
+            ' Navigate to the left item in case of "left" keypress
             m.top.jumpToItem = currentItem - 1
             handled = true
-        ' handle "right" button keypress
+        ' Handle "right" button keypress
         else if key = "right" and m.isContentList = true
-            ' navigate to the right item in case of "right" keypress
+            ' Navigate to the right item in case of "right" keypress
             m.top.jumpToItem = currentItem + 1
             handled = true
         end if

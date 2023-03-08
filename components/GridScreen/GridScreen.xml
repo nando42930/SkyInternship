@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="GridScreen" extends="Group"  initialFocus="buttons">
+<component name="GridScreen" extends="Group"  initialFocus="rowList">
     <script type="text/brightscript" uri="GridScreen.brs" />
     <script type="text/brightscript" uri="pkg:/source/utils.brs" />
 	<interface>
@@ -10,31 +10,27 @@
         <field id="jumpToRowItem" type="intarray" alias="RowList.jumpToRowItem" />
         <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
         <field id="itemFocused" type="integer" alwaysNotify="true" />
-        <field id="buttonSelected" type="integer" alias="buttons.itemSelected" />
-        <field id="buttons" type="node" alias="buttons.content" />
+        <field id="buttonSelected" type="integer" alias="ButtonBar.itemSelected" />
+        <field id="buttonBar" type="node" alias="ButtonBar.content" />
     </interface>
     <children>
         <LayoutGroup layoutDirection="horiz" vertAlignment="center" translation="[0,45]">
             <Poster uri="pkg:/images/PeacockLogo.png"/>
-                <MaskGroup
-                            id="maskGroup"
-                            maskUri="../../images/ButtonGradient.png"
-                            masksize="[1025, 55]"
-                            maskOffset="[500, 0]">
-                    <RowList
-                        id="buttons"
-                        itemSize="[1280,64]"
-                        focusBitmapUri="../../images/TileBorderHighlight1080p.9.png">
-                        <!-- rowItemSize="[[138,64], [130,64], [167,64], [127,64], [118,64], [130,64]]" -->
-                        <!-- <Button text="Browse" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="138"></Button>
-                        <Button text="Movies" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="130" translation="[138,0]"></Button>
-                        <Button text="TV Shows" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="167" translation="[268,0]"></Button>
-                        <Button text="Sports" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="127" translation="[435,0]"></Button>
-                        <Button text="WWE" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="118" translation="[562,0]"></Button>
-                        <Button text="Search" iconUri="" focusedIconUri="" focusedTextColor="0x6F6F6F" minWidth="130" translation="[680,0]"></Button> -->
-                        <!-- <Button iconUri="file:///pkg:/images/search-icon-vector.jpeg" minWidth="167" maxWidth="167"></Button> -->
-                    </RowList>
-                </MaskGroup>
+            <!-- <Poster uri="pkg:/images/SearchIcon.png" width="64" height="64"/> -->
+            <MaskGroup
+            id="maskGroup"
+            maskUri="pkg:/images/ButtonGradient.png"
+            masksize="[1025, 55]"
+            maskOffset="[0, 0]">
+            <Button text="Browse" focusFootprintBitmapUri="" focusBitmapUri="" showFocusFootprint="true" iconUri="" focusedIconUri=""></Button>
+            <RowList
+                itemComponentName="ButtonBarItemComponent"
+                id="buttonBar"
+                itemSize="[500,64]"
+                focusBitmapUri="pkg:/images/TileBorderHighlight1080p.9.png">
+                <!-- rowItemSize="[[138,64], [130,64], [167,64], [127,64], [118,64], [130,64]]" -->
+            </RowList>
+            </MaskGroup>
         </LayoutGroup>
         <RowList
             itemComponentName="RowListItemComponent"
@@ -45,7 +41,7 @@
             rowItemSpacing="[[5, 0]]"
             itemSize="[1280, 185]"
             vertFocusAnimationStyle="floatingFocus"
-            focusBitmapUri="../../images/Focus.9.png"
+            focusBitmapUri="pkg:/images/TileBorderHighlight1080p.9.png"
         />
     </children>
 </component>

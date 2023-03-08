@@ -1,6 +1,6 @@
 ### VisualStudioCode ###
 .vscode/
-/.env
+.env
 
 # Local History for Visual Studio Code
 .history/
@@ -15,6 +15,5 @@
 
 # Others
 **/.DS_Store
-.DS_Store
 out
 .git

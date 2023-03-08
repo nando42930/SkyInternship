@@ -14,7 +14,6 @@ sub GetContent()
     xfer.SetURL("https://jonathanbduval.com/roku/feeds/roku-developers-feed-v1.json")
     rsp = xfer.GetToString()
     rootChildren = []
-    rows = {}
 
     ' parse the feed and build a tree of ContentNodes to populate the GridView
     json = ParseJson(rsp)

@@ -1,3 +1,6 @@
+' Copyright (c) 2020 Roku, Inc. All rights reserved.
+
+' entry point of EpisodesListItemComponent
 sub Init()
     ' store components to m for populating them with metadata
     m.poster = m.top.FindNode("poster")
@@ -16,7 +19,7 @@ sub itemContentChanged() ' invoked when episode data is retrieved
         ' populate components with metadata
         m.poster.uri = itemContent.hdPosterUrl
         m.title.text = itemContent.title
-        divider = "|"
+        divider = " | "
         episode = "E" + itemContent.episodePosition
         time = GetTime(itemContent.length)
         date = itemContent.releaseDate

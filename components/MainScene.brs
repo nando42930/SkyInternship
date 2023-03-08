@@ -1,14 +1,23 @@
+' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
+
+' entry point of  MainScene
+' Note that we need to import this file in MainScene.xml using relative path.
 sub Init()
+    ' set background color for scene. Applied only if backgroundUri has empty value
     m.top.backgroundColor = "0x000000"
     m.top.backgroundUri = ""
-    m.loadingIndicator = m.top.FindNode("loadingIndicator") ' Store loadingIndicator node to m
+    m.loadingIndicator = m.top.FindNode("loadingIndicator") ' store loadingIndicator node to m
     InitScreenStack()
     ShowGridScreen()
-    RunContentTask() ' Retrieving content
+    RunContentTask() ' retrieving content
+    m.top.SignalBeacon("AppLaunchComplete")
+    ' to handle Roku Pay we need to create channelStore object in the global node
+    m.global.AddField("channelStore", "node", false)
+    m.global.channelStore = CreateObject("roSGNode", "ChannelStore")
 end sub
 
 ' The OnKeyEvent() function receives remote control key events
-function OnKeyEvent(key as String, press as Boolean) as Boolean
+function OnkeyEvent(key as String, press as Boolean) as Boolean
     result = false
     if press
         ' handle "back" key press

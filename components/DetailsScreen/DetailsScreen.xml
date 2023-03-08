@@ -1,17 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd" -->
-<component name="DetailsScreen" extends="Group" initialFocus="Buttons">
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="DetailsScreen" extends="Group" initialFocus="Buttons" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
     <script type="text/brightscript" uri="DetailsScreen.brs" />
     <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
     <interface>
         <!-- Content fields -->
-        <field id="content" type="node" />
-        <!-- @WriteOnly -->
-        <!-- Manually focus on desired item. This field must be set after setting th content field. -->
+        <field id="content" type="node" onChange="OnContentChange" />
+        <!-- @WriteOnly  -->
+        <!-- Manually focus on desired item. This field must be set after setting the content field. -->
         <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
-        <!-- tells what item is currently focused -->
+        <!-- tells what item is currently focused  -->
         <field id="itemFocused" type="integer" alwaysNotify="true" />
         <field id="buttonSelected" type="integer" alias="buttons.itemSelected" />
+        <field id="buttons" type="node" alias="buttons.content" />
     </interface>
     <children>
         <LayoutGroup
@@ -37,8 +40,9 @@
                 </Rectangle>
                 <Label
                     id="titleLabel"
+                    maxLines="2"
                     width="357"
-                    wrap="false"
+                    wrap="true"
                     horizAlign="right"
                 />
                 <Label
@@ -52,12 +56,12 @@
                 <LabelList
                     id="buttons"
                     numRows="3"
-                    itemSpacing="[0, 10]"
+                    itemSpacing="[0,10]"
                     itemSize="[593, 48]"
                 />
                 <LayoutGroup
                     itemSpacings="[40]"
-                    translation="[0, 200]">
+                    translation="[0, 208]">
                     <Label
                         id="descriptionLabel"
                         wrap="true"

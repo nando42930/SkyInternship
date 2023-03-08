@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="GridScreen" extends="Group" initialFocus="RowList">
-    <script type="text/brightscript" uri="GridScreen.brs"/>
-    <interface>
+
+<component name="GridScreen" extends="Group"  initialFocus="rowList">
+    <script type="text/brightscript" uri="GridScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+	<interface>
         <!-- Specifies the content for the Grid -->
         <field id="content" type="node" alias="RowList.content" />
-        <field id="rowItemSelected" type="intarray" alwaysNotify="true" alias="RowList.rowItemSelected" />
+        <field id="rowItemSelected" type="intarray" alwaysnotify="true" alias="RowList.rowItemSelected" />
         <field id="jumpToRowItem" type="intarray" alias="RowList.jumpToRowItem" />
+        <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
+        <field id="itemFocused" type="integer" alwaysNotify="true" />
+        <field id="buttonSelected" type="integer" alias="ButtonBar.itemSelected" />
+        <field id="buttonBar" type="node" alias="ButtonBar.content" />
     </interface>
     <children>
-        <!-- <ButtonGroup
-            buttons="[Browse, Movies, TV Shows, Sports, WWE]"
-            focusButton="0"
-            textColor="0x808080"
-        /> -->
+        <LayoutGroup layoutDirection="horiz" vertAlignment="center" translation="[0,45]">
+            <Poster uri="pkg:/images/PeacockLogo.png"/>
+            <!-- <Poster uri="pkg:/images/SearchIcon.png" width="64" height="64"/> -->
+            <MaskGroup
+            id="maskGroup"
+            maskUri="pkg:/images/ButtonGradient.png"
+            masksize="[1025, 55]"
+            maskOffset="[0, 0]">
+            <Button text="Browse" focusFootprintBitmapUri="" focusBitmapUri="" showFocusFootprint="true" iconUri="" focusedIconUri=""></Button>
+            <RowList
+                itemComponentName="ButtonBarItemComponent"
+                id="buttonBar"
+                itemSize="[500,64]"
+                focusBitmapUri="pkg:/images/TileBorderHighlight1080p.9.png">
+                <!-- rowItemSize="[[138,64], [130,64], [167,64], [127,64], [118,64], [130,64]]" -->
+            </RowList>
+            </MaskGroup>
+        </LayoutGroup>
         <RowList
             itemComponentName="RowListItemComponent"
             id="rowList"
             numRows="3"
+            translation="[20,110]"
             rowitemSize="[[320, 180]]"
-            rowItemSpacing="[[20, 0]]"
-            itemSize="[1100, 270]"
-            focusXOffset="[50]"
-            rowfocusAnimationStyle="floatingFocus"
+            rowItemSpacing="[[5, 0]]"
+            itemSize="[1280, 185]"
             vertFocusAnimationStyle="floatingFocus"
+            focusBitmapUri="pkg:/images/TileBorderHighlight1080p.9.png"
         />
     </children>
 </component>

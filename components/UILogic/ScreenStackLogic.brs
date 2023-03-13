@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 sub InitScreenStack()
     m.screenStack = []
 end sub

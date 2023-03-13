@@ -3,7 +3,7 @@
 
 <component name="EpisodesScreen" extends="Group" initialFocus="itemsList" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
     <script type="text/brightscript" uri="EpisodesScreen.brs" />
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <interface>
         <!-- Content fields -->
         <field id="content" type="node" alwaysnotify="true" onChange="OnContentChange" />

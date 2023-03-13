@@ -83,7 +83,7 @@ function GetSeasonData(seasons as Object, homeRowIndex as Integer, homeItemIndex
     seasonsArray = []
     if seasons <> invalid
         episodeCounter = 0
-        for each season in seasons         
+        for each season in seasons
             if season.episodes <> invalid
                 episodes = []
                 for each episode in season.episodes

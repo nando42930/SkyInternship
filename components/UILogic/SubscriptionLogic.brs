@@ -135,25 +135,25 @@ sub OnGetCatalog(event as Object)
     m.top.dialog = dialog   ' Set dialog to MainScene
 end sub
 
-' handle button press on purchase dialog
-sub DoSubscriptionOrder(event as Object)
-    ' extract buttonSelected index from the dialog
-    buttonSelectedIndex = m.top.dialog.buttonSelected
-    ' extract catalog item as child by index from the channelStore node
-    catalogItem = m.activeCatalogItems[buttonSelectedIndex]
+' ' handle button press on purchase dialog
+' sub DoSubscriptionOrder(event as Object)
+'     ' extract buttonSelected index from the dialog
+'     buttonSelectedIndex = m.top.dialog.buttonSelected
+'     ' extract catalog item as child by index from the channelStore node
+'     catalogItem = m.activeCatalogItems[buttonSelectedIndex]
 
-    ' to create an order we need to create a ContentNode with children as products to purchase
-    order = CreateObject("roSGNode", "ContentNode")
-    product = order.CreateChild("ContentNode")
-    ' also we need to set required info as code, name and quantity
-    product.AddFields({ code: catalogItem.code, name: catalogItem.name, qty: 1 })
+'     ' to create an order we need to create a ContentNode with children as products to purchase
+'     order = CreateObject("roSGNode", "ContentNode")
+'     product = order.CreateChild("ContentNode")
+'     ' also we need to set required info as code, name and quantity
+'     product.AddFields({ code: catalogItem.code, name: catalogItem.name, qty: 1 })
 
-    ' do an order by setting order to channelStore field and calling its command
-    m.global.channelStore.order = order
-    m.global.channelStore.command = "doOrder"
-    ' observe orderStatus to be able to handle order response
-    m.global.channelStore.ObserveField("orderStatus", "OnOrderStatus")
-end sub
+'     ' do an order by setting order to channelStore field and calling its command
+'     m.global.channelStore.order = order
+'     m.global.channelStore.command = "doOrder"
+'     ' observe orderStatus to be able to handle order response
+'     m.global.channelStore.ObserveField("orderStatus", "OnOrderStatus")
+' end sub
 
 sub OnOrderStatus(event as Object)
     orderStatus = event.GetData()

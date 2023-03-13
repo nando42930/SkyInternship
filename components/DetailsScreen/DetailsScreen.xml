@@ -2,7 +2,7 @@
 
 <component name="DetailsScreen" extends="Group" initialFocus="Buttons" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
     <script type="text/brightscript" uri="DetailsScreen.brs" />
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
     <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
     <interface>

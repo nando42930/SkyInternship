@@ -2,7 +2,7 @@
 <!--********** Copyright 2020 Roku Corp.  All Rights Reserved. **********-->
 
 <component name="PlayerTask" extends="Task">
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
     <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
     <interface>

@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 ' Channel entry point
 sub Main(args as Object)
     ShowChannelRSGScreen(args)
@@ -21,8 +19,9 @@ sub ShowChannelRSGScreen(args as Object)
     inputObject.SetMessagePort(m.port)
     ' event loop
     while(true)
-        ' waiting for events from screen
+        ' waiting for events from screen without a timeout
         msg = wait(0, m.port)
+        ' retrieve type of object which generated an event
         msgType = type(msg)
         if msgType = "roSGScreenEvent"
             if msg.IsScreenClosed() then return

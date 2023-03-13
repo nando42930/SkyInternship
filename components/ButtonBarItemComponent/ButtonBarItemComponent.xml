@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<component name="ButtonBarItemComponent" extends="Group" >
+    <script type="text/brightscript" uri="ButtonBarItemComponent.brs" />
+
+    <interface>
+        <field id="buttonContent" type="node" onChange="OnContentSet" />
+        <field id="itemHasFocus" type="bool" value="false" onChange="HandleFocus" />
+        <field id="isItemSelected" type="bool" value="false" onChange="HandleSelection" />
+
+        <field id="buttonColor" type="string" value="0x434247FF" />
+        <field id="buttonTextColor" type="string" value="0xFFFFFFFF" />
+        <field id="focusedButtonColor" type="string" value="0xFFFFFFFF" />
+        <field id="focusedButtonTextColor" type="string" value="0x000000FF" />
+    </interface>
+
+    <children>
+        <Rectangle
+            id="buttonBackground"
+            height="64.0"
+            color="0xFF0000FF">
+            <SimpleLabel
+                id="buttonLabel"
+                color="0xFFFFFFFF"
+                font="fontUri:MediumBoldSystemFont"
+                horizAlign="center"
+                vertAlign="center"
+            />
+        </Rectangle>
+    </children>
+</component>

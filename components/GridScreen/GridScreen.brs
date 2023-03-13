@@ -1,58 +1,15 @@
 ' Entry point of GridScreen
-' Note that we need to import this file in GridScreen.xml using relative path
+' This file has to be referenced in GridScreen.xml using relative path
 sub Init()
     ' Observe "visible" field so we can know when GridScreen change visibility
     m.top.ObserveField("visible", "OnVisibleChange")
     m.rowList = m.top.FindNode("rowList")
-    m.buttonBar = m.top.FindNode("buttonBar")
-end sub
-
-function SetButtonBarContent() as Object
-    buttonBarContent = CreateObject("roSGNode", "ContentNode")
-    buttonBarContent.Update({
-        children: [{
-            title: "Browse"
-        }, {
-            title: "Movies"
-        }, {
-            title: "TV Shows"
-        }, {
-            title: "Sports"
-        }, {
-            title: "WWE"
-        }, {
-            title: "Search"
-        }]
-    }, true)
-    return buttonBarContent
-end function
-
-sub OnButtonBarItemSelected(event as Object)
-    ' This is where you can handle a selection event
 end sub
 
 sub OnVisibleChange()' Invoked when GridScreen visibility is changed
     ' Set focus for button bar when GridScreen becomes visible
     if m.top.visible = true
         m.buttonBar.SetFocus(true)
-    end if
-end sub
-
-sub SetButtons(buttons as Object)
-    result = []
-    ' Prepare array with button's labels
-    for each button in buttons
-        result.push({title : button, id: LCase(button)})
-    end for
-    m.buttonBar.content = ContentListToSimpleNode(result) ' Populate buttons list
-end sub
-
-sub OnJumpToItem() ' Invoked when jumpToItem field is populated
-    content = m.top.content
-    ' Check if jumpToItem field has valid value
-    ' It should be set within interval from 0 to content.Getchildcount()
-    if content <> invalid and m.top.jumpToItem >= 0 and content.GetChildCount() > m.top.jumpToItem
-        m.top.itemFocused = m.top.jumpToItem
     end if
 end sub
 

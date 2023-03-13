@@ -5,9 +5,9 @@
     <interface>
         <field id="itemContent" type="node" onChange="itemContentChanged" />
     </interface>
-     
+
     <script type="text/brightscript" uri="EpisodesListItemComponent.brs" />
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <children>
         <Rectangle
             width="650"

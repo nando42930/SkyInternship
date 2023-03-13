@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="ButtonBar" extends="Group">
+    <script type="text/brightscript" uri="ButtonBar.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
+
+    <interface>
+        <!-- @Public -->
+        <!-- СontentNode for ButtonBar. This node should have a child for each button to be displayed.
+             You can also populate this node using an SGDEX ContentHandler
+        -->
+        <field id="content" type="node" alias="buttonBar.buttonContent" />
+
+        <!-- @Public -->
+        <!-- @ReadOnly -->
+        <!-- Updated when the focused button changes.
+             Developers can observe this field in their channels to react to the
+             user navigating from button to button
+        -->
+        <field id="itemFocused" type="integer" value="0" alwaysNotify="true" />
+
+        <!-- @Public -->
+        <!-- @ReadOnly -->
+        <!-- Updated when a button is selected.
+             Developers can observe this field in their channels to react to the
+             user selecting a button.
+        -->
+        <field id="itemSelected" type="integer" value="0" alwaysNotify="true" />
+
+        <!-- @Public -->
+        <!-- @WriteOnly -->
+        <!-- Set this field to force focus to a specific button.
+            This field must be set after setting the content field.
+        -->
+        <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
+    </interface>
+
+    <children>
+        <RowList
+            itemComponentName="ButtonBarItemComponent"
+            id="buttonBar"
+            numRows="1"
+            translation="[20,20]"
+            rowitemSize="[[320, 180]]"
+            rowItemSpacing="[[5, 0]]"
+            itemSize="[1280, 185]"
+        />
+    </children>
+</component>
+
+
+<!-- <RowList
+    itemComponentName="ButtonBarItemComponent"
+    id="buttonBar"
+    itemSize="[500,64]"
+    focusBitmapUri="pkg:/images/TileBorderHighlight720p.9.png">
+</RowList> -->
+<!-- rowItemSize="[[138,64], [130,64], [167,64], [127,64], [118,64]]" -->

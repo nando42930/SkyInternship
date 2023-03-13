@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 sub RunContentTask()
     m.contentTask = CreateObject("roSGNode", "MainLoaderTask") ' create task for feed retrieving
     ' observe content so we can know when feed content will be parsed

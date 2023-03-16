@@ -6,6 +6,7 @@ sub Init()
     m.rowList = m.top.FindNode("rowList")
 end sub
 
+' Handles visibility of GridScreen.
 sub OnVisibleChange()' Invoked when GridScreen visibility is changed
     ' Set focus for button bar when GridScreen becomes visible
     if m.top.visible = true

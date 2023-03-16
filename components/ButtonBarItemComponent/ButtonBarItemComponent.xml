@@ -4,28 +4,34 @@
     <script type="text/brightscript" uri="ButtonBarItemComponent.brs" />
 
     <interface>
-        <field id="buttonContent" type="node" onChange="OnContentSet" />
+        <field id="itemContent" type="node" onChange="OnContentSet" />
         <field id="itemHasFocus" type="bool" value="false" onChange="HandleFocus" />
         <field id="isItemSelected" type="bool" value="false" onChange="HandleSelection" />
 
-        <field id="buttonColor" type="string" value="0x434247FF" />
-        <field id="buttonTextColor" type="string" value="0xFFFFFFFF" />
-        <field id="focusedButtonColor" type="string" value="0xFFFFFFFF" />
+        <field id="buttonColor" type="string" value="0x8080807F" />
+        <field id="buttonTextColor" type="string" value="0xFFFFFF7F" />
+        <field id="focusedButtonColor" type="string" value="0xFFA500FF" />
         <field id="focusedButtonTextColor" type="string" value="0x000000FF" />
     </interface>
 
     <children>
+        <!-- <MaskGroup
+                id="maskGroup"
+                maskUri="pkg:/images/ButtonGradient.png"
+                masksize="[1025, 55]"
+                maskOffset="[0, 0]">
+            </MaskGroup> -->
         <Rectangle
             id="buttonBackground"
-            height="64.0"
-            color="0xFF0000FF">
-            <SimpleLabel
-                id="buttonLabel"
-                color="0xFFFFFFFF"
-                font="fontUri:MediumBoldSystemFont"
-                horizAlign="center"
-                vertAlign="center"
-            />
-        </Rectangle>
+            height="40"
+            width="120"
+            color="0x8080807F" />
+        <Label
+            id="buttonLabel"
+            height="40"
+            color="0xFFFFFF7F"
+            font="font:SmallestBoldSystemFont"
+            horizAlign="center"
+            vertAlign="center" />
     </children>
 </component>

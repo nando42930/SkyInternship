@@ -1,13 +1,15 @@
-' Entry point of ButtonBarItemComponent
-' This file has to be referenced in ButtonBarItemComponent.xml using relative path
+' Entry point of ButtonBar
+' This file has to be referenced in ButtonBar.xml using relative path
 sub Init()
     ' Button bar node
     m.buttonBar = m.top.FindNode("buttonBar")
     ' Nodes in each button
     m.buttonBackground = m.top.FindNode("buttonBackground")
     m.buttonLabel = m.top.FindNOde("buttonLabel")
+
+    buttonLabels = ["Browse", "Movies", "TV Shows", "Sports", "WWE"]
     ' Different button's labels
-    SetButtons(["Browse", "Movies", "TV Shows", "Sports", "WWE"])
+    SetButtons(buttonLabels)
 end sub
 
 sub SetButtons(buttons as Object)
@@ -16,7 +18,11 @@ sub SetButtons(buttons as Object)
     for each button in buttons
         result.push({title: button, id: LCase(button)})
     end for
-    m.buttonBar.content = ContentListToSimpleNode(result) ' Populate buttons list
+    content = ContentListToSimpleNode(result)
+    node = CreateObject("roSGNode", "ContentNode")
+    node.AppendChild(content)
+
+    m.buttonBar.content = node ' Populate buttons list
 end sub
 
 sub OnJumpToItem() ' Invoked when jumpToItem field is populated

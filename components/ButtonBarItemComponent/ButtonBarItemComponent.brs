@@ -1,7 +1,7 @@
 sub OnContentSet()
-    ? m.top.buttonContent
-    content = m.top.buttonContent
+    content = m.top.itemContent
     if content <> invalid
-        m.top.FindNode("buttonLabel").text = content.title
+        label = m.top.FindNode("buttonLabel")
+        label.text = content.title
     end if
 end sub

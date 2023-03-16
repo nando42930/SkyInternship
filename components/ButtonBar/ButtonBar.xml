@@ -9,7 +9,7 @@
         <!-- СontentNode for ButtonBar. This node should have a child for each button to be displayed.
              You can also populate this node using an SGDEX ContentHandler
         -->
-        <field id="content" type="node" alias="buttonBar.buttonContent" />
+        <field id="content" type="node" alias="buttonBar.content" />
 
         <!-- @Public -->
         <!-- @ReadOnly -->
@@ -40,19 +40,8 @@
             itemComponentName="ButtonBarItemComponent"
             id="buttonBar"
             numRows="1"
-            translation="[20,20]"
-            rowitemSize="[[320, 180]]"
             rowItemSpacing="[[5, 0]]"
-            itemSize="[1280, 185]"
-        />
+            itemSize="[700, 40]"
+            rowItemSize="[[138,40], [130,40], [167,40], [127,40], [118,40]]" />
     </children>
 </component>
-
-
-<!-- <RowList
-    itemComponentName="ButtonBarItemComponent"
-    id="buttonBar"
-    itemSize="[500,64]"
-    focusBitmapUri="pkg:/images/TileBorderHighlight720p.9.png">
-</RowList> -->
-<!-- rowItemSize="[[138,64], [130,64], [167,64], [127,64], [118,64]]" -->

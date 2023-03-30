@@ -1,4 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
 ' Return all object with methods for smart bookmark handling
 function MasterChannelSmartBookmarks()
     this = {

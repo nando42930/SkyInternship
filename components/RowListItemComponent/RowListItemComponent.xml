@@ -4,16 +4,16 @@
     <interface>
         <field id="itemContent" type="node" onChange="OnContentSet" />
     </interface>
-    <script type="text/brightscript" uri="RowListItemComponent.brs" />
     <children>
         <!-- Set loadWidth/loadHeight and loadDisplayMode for better performance -->
         <Poster
             id="poster"
             loadDisplayMode="scaleToFill"
             width="320"
-            height="180"
+            height="200"
             loadWidth="320"
-            loadHeight="180"
+            loadHeight="200"
         />
     </children>
+    <script type="text/brightscript" uri="RowListItemComponent.brs" />
 </component>

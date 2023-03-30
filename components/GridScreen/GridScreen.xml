@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="GridScreen" extends="Group"  initialFocus="rowList">
-    <script type="text/brightscript" uri="GridScreen.brs" />
-    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
-	<interface>
+<component name="GridScreen" extends="Group" initialFocus="buttonBar">
+	<interface>        
         <!-- Specifies the content for the Grid -->
         <field id="content" type="node" alias="rowList.content" />
         <field id="rowItemSelected" type="intarray" alwaysnotify="true" alias="rowList.rowItemSelected" />
         <field id="jumpToRowItem" type="intarray" alias="rowList.jumpToRowItem" />
-        <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
-        <field id="itemFocused" type="integer" alwaysNotify="true" />
+        <field id="itemFocused" type="integer" value="0" alwaysNotify="true" />
+        <field id="rowItemFocused" type="integer" value="0" alwaysNotify="true" alias="buttonBar.rowItemFocused" />
+        <field id="jumpToItem" type="integer" value="0" alwaysNotify="true" />
     </interface>
     <children>
         <LayoutGroup layoutDirection="horiz" vertAlignment="center" translation="[0,51]" itemSpacings="189">
-            <Poster uri="pkg:/images/PeacockLogo.png"/>
+            <Poster uri="pkg:/images/PeacockLogo.png" />
             <LayoutGroup layoutDirection="horiz" vertAlignment="bottom">
-                <ButtonBar id="buttonBar"/>
-                <Rectangle
-                    id="buttonBackground"
-                    height="40"
-                    width="40"
-                    color="0x8080807F" />
-                <Poster uri="pkg:/images/SearchIcon.png"/>
+                <ButtonBar id="buttonBar" />
             </LayoutGroup>
         </LayoutGroup>
-        <!-- <RowList
+        <RowList
             itemComponentName="RowListItemComponent"
             id="rowList"
             numRows="3"
-            translation="[20,110]"
-            rowitemSize="[[320, 180]]"
+            translation="[5,100]"
+            rowitemSize="[[320, 200]]"
             rowItemSpacing="[[5, 0]]"
-            itemSize="[1280, 185]"
+            itemSize="[1280, 205]"
             vertFocusAnimationStyle="floatingFocus"
-            focusBitmapUri="pkg:/images/TileBorderHighlight720p.9.png"
-        /> -->
+            focusBitmapUri="pkg:/images/TileBorderHighlight720p.9.png" />
     </children>
+    <script type="text/brightscript" uri="GridScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
 </component>

@@ -1,6 +1,4 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
- ' entry point of EpisodesScreen
+' entry point of EpisodesScreen
 function Init()
     ' observe "visible" so we can know when EpisodesScreen change visibility
     m.top.ObserveField("visible", "OnVisibleChange")
@@ -94,7 +92,7 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
             m.categoryListGainFocus = true
             ' navigate to seasons list
             m.categoryList.SetFocus(true)
-            m.itemsList.drawFocusFeedback = false
+            m.itemsList.drawFocusFeedback = true
             result = true
         ' handle "right" key press
         else if key = "right" and m.categoryList.HasFocus() ' seasons list should be focused

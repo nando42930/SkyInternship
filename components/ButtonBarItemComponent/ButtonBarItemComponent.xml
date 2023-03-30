@@ -1,37 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<component name="ButtonBarItemComponent" extends="Group" >
-    <script type="text/brightscript" uri="ButtonBarItemComponent.brs" />
-
+<component name="ButtonBarItemComponent" extends="Group">
     <interface>
         <field id="itemContent" type="node" onChange="OnContentSet" />
-        <field id="itemHasFocus" type="bool" value="false" onChange="HandleFocus" />
-        <field id="isItemSelected" type="bool" value="false" onChange="HandleSelection" />
-
+        <field id="itemHasFocus" type="bool" value="false" onChange="HandleFocus" alwaysNotify="true" />
+        <!-- <field id="itemSelected" type="integer" value="false" onChange="HandleSelection" alwaysNotify="true" /> -->
+        <field id="itemFocused" type="integer" value="0" alwaysNotify="true" />
         <field id="buttonColor" type="string" value="0x8080807F" />
         <field id="buttonTextColor" type="string" value="0xFFFFFF7F" />
         <field id="focusedButtonColor" type="string" value="0xFFA500FF" />
         <field id="focusedButtonTextColor" type="string" value="0x000000FF" />
     </interface>
-
     <children>
-        <!-- <MaskGroup
-                id="maskGroup"
-                maskUri="pkg:/images/ButtonGradient.png"
-                masksize="[1025, 55]"
-                maskOffset="[0, 0]">
-            </MaskGroup> -->
         <Rectangle
             id="buttonBackground"
+            width="100"
             height="40"
-            width="120"
             color="0x8080807F" />
+        <Poster
+            id="buttonGradient"
+            uri="pkg:/images/ButtonGradient.png"
+            width="100"
+            height="40"
+            loadWidth="100"
+            loadHeight="40"
+            loadDisplayMode="scaleToFit"
+            blendColor="0xFF8C00FF"
+            visible="false" />
         <Label
             id="buttonLabel"
+            width="100"
             height="40"
             color="0xFFFFFF7F"
             font="font:SmallestBoldSystemFont"
             horizAlign="center"
             vertAlign="center" />
     </children>
+    <script type="text/brightscript" uri="ButtonBarItemComponent.brs" />
 </component>

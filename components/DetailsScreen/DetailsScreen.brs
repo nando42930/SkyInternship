@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 ' entry point of detailsScreen
 function Init()
     ' observe "visible" so we can know when DetailsScreen change visibility

@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 sub ShowVideoScreen(rowContent as Object, selectedItem as Integer, isSeries = false as Boolean)
     videoScreen = CreateObject("roSGNode", "VideoScreen") ' create an instance of videoScreen
     videoScreen.observeField("close", "OnVideoScreenClose")

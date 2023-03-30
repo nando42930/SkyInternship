@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 ' return object with all methods for bookmarks logic handling
 function MasterChannelBookmarks()
     this = {

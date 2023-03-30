@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--********** Copyright 2020 Roku Corp.  All Rights Reserved. **********-->
 
 <component name="MainScene" extends="Scene">
     <interface>
         <field id="inputArgs" type="assocarray" onChange="OnInputDeepLinking" />
         <field id="launchArgs" type="assocarray" />
     </interface>
+    <children>
+        <!-- LoadingIndicator should be visible only in case of waiting for content -->
+        <Label
+            id="loadingIndicator"
+            text="Loading..."
+            width="1280"
+            height="720"
+            translation="[0, 0]"
+            horizAlign="center"
+            vertAlign="center"
+            visible="false"
+            font="font:MediumBoldSystemFont" />
+    </children>
     <script type="text/brightscript" uri="MainScene.brs" />
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <script type="text/brightscript" uri="UILogic/VideoPlayerLogic.brs" />
@@ -18,18 +30,4 @@
     <script type="text/brightscript" uri="UILogic/DeepLinkingLogic.brs" />
     <script type="text/brightscript" uri="UILogic/BookmarksLogic.brs" />
     <script type="text/brightscript" uri="UILogic/SmartBookmarksLogic.brs" />
-    <children>
-        <!-- LoadingIndicator should be visible only in case of waiting for content -->
-        <Label
-            id="loadingIndicator"
-            text="Loading..."
-            width="1280"
-            height="720"
-            translation="[0, 0]"
-            horizAlign="center"
-            vertAlign="center"
-            visible="false"
-            font="font:MediumBoldSystemFont"
-        />
-    </children>
 </component>

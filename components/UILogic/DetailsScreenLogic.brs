@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 sub ShowDetailsScreen(content as Object, selectedItem as Integer)
     ' create new instance of details screen
     detailsScreen = CreateObject("roSGNode", "DetailsScreen")

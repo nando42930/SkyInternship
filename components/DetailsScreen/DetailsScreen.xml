@@ -1,10 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <component name="DetailsScreen" extends="Group" initialFocus="Buttons" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
-    <script type="text/brightscript" uri="DetailsScreen.brs" />
-    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
-    <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
-    <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
     <interface>
         <!-- Content fields -->
         <field id="content" type="node" onChange="OnContentChange" />
@@ -35,30 +31,26 @@
                         loadWidth="357"
                         height="201"
                         loadHeight="201"
-                        loadDisplayMode="scaleToFit"
-                    />
+                        loadDisplayMode="scaleToFit" />
                 </Rectangle>
                 <Label
                     id="titleLabel"
                     maxLines="2"
                     width="357"
                     wrap="true"
-                    horizAlign="right"
-                />
+                    horizAlign="right" />
                 <Label
                     id="timeLabel"
                     width="357"
                     wrap="false"
-                    horizAlign="right"
-                />
+                    horizAlign="right" />
             </LayoutGroup>
             <Group>
                 <LabelList
                     id="buttons"
                     numRows="3"
                     itemSpacing="[0,10]"
-                    itemSize="[593, 48]"
-                />
+                    itemSize="[593, 48]" />
                 <LayoutGroup
                     itemSpacings="[40]"
                     translation="[0, 208]">
@@ -66,15 +58,17 @@
                         id="descriptionLabel"
                         wrap="true"
                         maxLines="6"
-                        width="593"
-                    />
+                        width="593" />
                     <Label
                         id="releaseLabel"
                         wrap="false"
-                        width="520"
-                    />
+                        width="520" />
                 </LayoutGroup>
             </Group>
         </LayoutGroup>
     </children>
+    <script type="text/brightscript" uri="DetailsScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
 </component>

@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 ' entry point of videoScreen
 function Init()
     ' set rectangle fields

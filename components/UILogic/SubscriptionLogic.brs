@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 sub CheckSubscriptionAndStartPlayback(rowContent as Object, selectedItem = 0 as Integer, isSeries = false as Boolean)
     m.rowContent = rowContent
     m.selectedItem = selectedItem

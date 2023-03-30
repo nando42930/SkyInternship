@@ -1,47 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="ButtonBar" extends="Group">
-    <script type="text/brightscript" uri="ButtonBar.brs" />
-    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
-
+<component name="ButtonBar" extends="Group" initialFocus="buttonBarRowList">
     <interface>
         <!-- @Public -->
         <!-- СontentNode for ButtonBar. This node should have a child for each button to be displayed.
-             You can also populate this node using an SGDEX ContentHandler
-        -->
-        <field id="content" type="node" alias="buttonBar.content" />
-
+             You can also populate this node using an SGDEX ContentHandler -->
+        <field id="content" type="node" alias="buttonBarRowList.content" />
         <!-- @Public -->
         <!-- @ReadOnly -->
         <!-- Updated when the focused button changes.
              Developers can observe this field in their channels to react to the
-             user navigating from button to button
-        -->
-        <field id="itemFocused" type="integer" value="0" alwaysNotify="true" />
-
+             user navigating from button to button -->
+        <field id="rowItemFocused" type="integer" value="0" alias="buttonBarRowList.rowItemFocused" onChange="onRowItemFocused" />
         <!-- @Public -->
         <!-- @ReadOnly -->
         <!-- Updated when a button is selected.
              Developers can observe this field in their channels to react to the
-             user selecting a button.
-        -->
+             user selecting a button. -->
         <field id="itemSelected" type="integer" value="0" alwaysNotify="true" />
-
         <!-- @Public -->
         <!-- @WriteOnly -->
         <!-- Set this field to force focus to a specific button.
-            This field must be set after setting the content field.
-        -->
-        <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
+            This field must be set after setting the content field. -->
+        <field id="jumpToItem" type="integer" value="0" onChange="OnJumpToItem" alwaysNotify="true" />
+        <field id="buttonColor" type="string" value="0x8080807F" />
+        <field id="focusedButtonColor" type="string" value="0xFFA500FF" />
     </interface>
-
     <children>
         <RowList
             itemComponentName="ButtonBarItemComponent"
-            id="buttonBar"
+            id="buttonBarRowList"
             numRows="1"
-            rowItemSpacing="[[5, 0]]"
-            itemSize="[700, 40]"
-            rowItemSize="[[138,40], [130,40], [167,40], [127,40], [118,40]]" />
+            itemSize="[500, 40]"
+            rowItemSize="[[100,40]]"
+            focusBitmapUri="" />
+            <!-- focusBitmapUri="pkg:/images/menuOver.9.png" -->
+        <Poster
+            id="searchBackground"
+            uri="pkg:/images/menuOver.9.png"
+            width="30"
+            height="30"
+            loadWidth="30"
+            loadHeight="30"
+            loadDisplayMode="scaleToFit"
+            blendColor="0x8080807F"
+            visible="true"
+            translation="[905,5]" />
+        <Poster
+            id="buttonGradient"
+            uri="pkg:/images/ButtonGradient.png"
+            width="30"
+            height="30"
+            loadWidth="30"
+            loadHeight="30"
+            loadDisplayMode="scaleToFit"
+            blendColor="0xFF8C00FF"
+            visible="false"
+            translation="[905,5]" />
+            
+            <!-- <MaskGroup maskUri="pkg:/images/menuOver.9.png" maskSize="[30,30]" maskOffset="[0,0]" /> -->
+            <Poster id="search" uri="pkg:/images/SearchIcon.png" translation="[910,10]" />
     </children>
+    <script type="text/brightscript" uri="ButtonBar.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
 </component>

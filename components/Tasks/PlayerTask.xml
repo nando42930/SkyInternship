@@ -1,10 +1,6 @@
-<?rokuml version="1.0" encoding="utf-8" ?>
-<!--********** Copyright 2020 Roku Corp.  All Rights Reserved. **********-->
+<?rokuml version="1.0" encoding="utf-8"?>
 
 <component name="PlayerTask" extends="Task">
-    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
-    <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
-    <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
     <interface>
         <!--  ContentNode with playlist items -->
         <field id="content" type="node" />
@@ -15,4 +11,7 @@
         <field id="isSeries" type="bool" />
     </interface>
     <script type="text/brightscript" uri="PlayerTask.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UILogic/BookmarksLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/UILogic/SmartBookmarksLogic.brs" />
 </component>

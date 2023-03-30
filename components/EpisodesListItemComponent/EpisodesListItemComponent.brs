@@ -1,5 +1,3 @@
-' Copyright (c) 2020 Roku, Inc. All rights reserved.
-
 ' entry point of EpisodesListItemComponent
 sub Init()
     ' store components to m for populating them with metadata

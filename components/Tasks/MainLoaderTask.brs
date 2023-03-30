@@ -1,5 +1,3 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
 ' Note that we need to import this file in MainLoaderTask.xml using relative path.
 sub Init()
     ' set the name of the function in the Task node component to be executed when the state field changes to RUN

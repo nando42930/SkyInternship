@@ -1,19 +1,16 @@
 ' Entry point of ButtonBar
 ' This file has to be referenced in ButtonBar.xml using relative path
 sub Init()
-    ' Button bar node
-    m.buttonBar = m.top.FindNode("buttonBar")
-    ' Nodes in each button
-    m.buttonBackground = m.top.FindNode("buttonBackground")
-    m.buttonLabel = m.top.FindNOde("buttonLabel")
-
-    buttonLabels = ["Browse", "Movies", "TV Shows", "Sports", "WWE"]
-    ' Different button's labels
-    SetButtons(buttonLabels)
+    ' Button bar nodes
+    m.buttonBarRowList = m.top.FindNode("buttonBarRowList")
+    m.search = m.top.FindNode("search")
+    SetButtons()
 end sub
 
-sub SetButtons(buttons as Object)
+sub SetButtons()
+    buttons = ["Browse", "Movies", "TV Shows", "Sports", "WWE"]
     result = []
+    content = CreateObject("roSGNode", "ContentNode")
     ' Prepare array with button's labels
     for each button in buttons
         result.push({title: button, id: LCase(button)})
@@ -21,8 +18,12 @@ sub SetButtons(buttons as Object)
     content = ContentListToSimpleNode(result)
     node = CreateObject("roSGNode", "ContentNode")
     node.AppendChild(content)
+    m.buttonBarRowList.content = node ' Populate buttons list
+end sub
 
-    m.buttonBar.content = node ' Populate buttons list
+sub OnRowItemFocused()
+    SetButtons()
+    m.buttonBarRowList.jumpToItem = m.top.rowItemFocused[1]
 end sub
 
 sub OnJumpToItem() ' Invoked when jumpToItem field is populated
@@ -34,20 +35,37 @@ sub OnJumpToItem() ' Invoked when jumpToItem field is populated
     end if
 end sub
 
-sub HandleFocus()
-    content = m.top.buttonContent
-    if content.itemHasFocus
-        content.buttonBackground.color = m.focusedButtonColor
-        content.buttonLabel.color = m.focusedButtonTextColor
-    else if not content.itemHasFocus
-        content.buttonBackground.color = m.buttonColor
-        content.buttonLabel.color = m.buttonTextColor
-    end if
-end sub
-
-sub HandleSelection()
-end sub
-
-' sub OnButtonBarItemSelected(event as Object)
-'     ' This is where you can handle a selection event
+' sub OnItemSelected()
+'     content = m.top.content
+'     label = content.FindNode("buttonLabel").text
+'     if label = "Browse"
+'         return
+'     else if label = "Movies"
+'         return
+'     else if label = "TV Shows"
+'         return
+'     else if label = "Sports"
+'         return
+'     else if label = "WWE"
+'         return
+'     end if
 ' end sub
+
+function OnKeyEvent(key as String, pressed as Boolean) as Boolean
+    searchBackground = m.top.FindNode("searchBackground")
+    buttonGradient = m.top.FindNode("buttonGradient")
+    if pressed
+        if key = "right" and m.buttonBarRowList.hasFocus()
+            m.search.setFocus(true)
+            buttonGradient.visible = true
+            searchBackground.blendColor = m.top.focusedButtonColor
+            SetButtons()
+        else if key = "left" and m.search.hasFocus()
+            m.buttonBarRowList.setFocus(true)
+            buttonGradient.visible = false
+            searchBackground.blendColor = m.top.buttonColor
+            SetButtons()
+        end if
+    end if
+    return false
+end function

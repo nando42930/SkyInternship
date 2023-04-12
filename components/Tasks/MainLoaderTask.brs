@@ -1,12 +1,12 @@
-' Note that we need to import this file in MainLoaderTask.xml using relative path.
+' Entry point of MainLoaderTask invoked by ContentTaskLogic.
 sub Init()
-    ' set the name of the function in the Task node component to be executed when the state field changes to RUN
-    ' in our case this method executed after the following cmd: m.contentTask.control = "run"(see Init method in MainScene)
+    ' Sets the name of the function in the Task node component to be executed when the state field changes to RUN.
+    ' This method is executed after the following cmd: m.contentTask.control = "run" on ContentTaskLogic.
     m.top.functionName = "GetContent"
 end sub
 
 sub GetContent()
-    ' request the content feed from the API
+    ' Requests the content feed from the API.
     xfer = CreateObject("roURLTransfer")
     xfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
     xfer.SetURL("https://jonathanbduval.com/roku/feeds/roku-developers-feed-v1.json")

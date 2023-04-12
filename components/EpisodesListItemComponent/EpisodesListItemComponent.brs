@@ -1,20 +1,20 @@
-' entry point of EpisodesListItemComponent
+' Entry point of EpisodesListItemComponent.
 sub Init()
-    ' store components to m for populating them with metadata
+    ' Stores components to m to populate them with metadata.
     m.poster = m.top.FindNode("poster")
     m.title = m.top.FindNode("title")
     m.description = m.top.FindNode("description")
     m.info = m.top.FindNode("info")
-    ' set font size for title and description Labels
+    ' Sets font size for title and description labels.
     m.title.font.size = 20
     m.description.font.size = 16
     m.info.font.size = 16
 end sub
 
-sub itemContentChanged() ' invoked when episode data is retrieved
-    itemContent = m.top.itemContent ' episode metadata
+sub itemContentChanged() ' Invoked when episode data is retrieved.
+    itemContent = m.top.itemContent ' Episode metadata.
     if itemContent <> invalid
-        ' populate components with metadata
+        ' Populates components with metadata.
         m.poster.uri = itemContent.hdPosterUrl
         m.title.text = itemContent.title
         divider = " | "

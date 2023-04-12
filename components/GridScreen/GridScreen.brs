@@ -1,5 +1,4 @@
-' Entry point of GridScreen
-' This file has to be referenced in GridScreen.xml using relative path
+' Entry point of GridScreen.
 sub Init()
     ' Observe "visible" field so we can know when GridScreen change visibility
     m.top.ObserveField("visible", "OnVisibleChange")

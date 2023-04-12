@@ -1,27 +1,28 @@
 sub InitScreenStack()
-    m.screenStack = []
+    m.screenStack = [] ' Screen stack initialization.
 end sub
 
 sub ShowScreen(node as Object)
-    prev = m.screenStack.Peek() ' take current screen from screen stack but don't delete it
+    prev = m.screenStack.Peek() ' Takes current screen from screen stack without deleting it.
     if prev <> invalid
-        prev.visible = false ' hide current screen if it exist
+        prev.visible = false ' Hides current screen if exists.
     end if
-    m.top.AppendChild(node) ' add new screen to scene
-    ' show new screen
+    m.top.AppendChild(node) ' Adds new screen to scene.
+    ' Shows and focuses new screen.
     node.visible = true
     node.SetFocus(true)
-    m.screenStack.Push(node) ' add new screen to the screen stack
+    m.screenStack.Push(node) ' Adds new screen to the screen stack.
 end sub
 
 sub CloseScreen(node as Object)
-    if node = invalid OR (m.screenStack.Peek() <> invalid AND m.screenStack.Peek().IsSameNode(node))
-        last = m.screenStack.Pop() ' remove screen from screenStack
-        last.visible = false ' hide screen
+    if node = invalid or (m.screenStack.Peek() <> invalid and m.screenStack.Peek().IsSameNode(node))
+        last = m.screenStack.Pop() ' Removes last screen from screenStack.
+        last.visible = false ' Hides screen.
         m.top.RemoveChild(last)
-        ' take previous screen and make it visible
+        ' Takes previous screen and makes it visible.
         prev = m.screenStack.Peek()
         if prev <> invalid
+            ' Shows and focuses previous screen.
             prev.visible = true
             prev.SetFocus(true)
         end if
@@ -29,30 +30,30 @@ sub CloseScreen(node as Object)
 end sub
 
 sub AddScreen(node as Object)
-    m.top.AppendChild(node) ' add new screen to scene
-    m.screenStack.Push(node) ' add new screen to the screen stack
+    m.top.AppendChild(node) ' Adds new screen to scene.
+    m.screenStack.Push(node) ' Adds new screen to the screen stack.
 end sub
 
 sub ClearScreenStack()
     if m.screenStack.Count() > 1
         while m.screenStack.Count() > 1
-            last = m.screenStack.Pop() ' remove screen from screenStack
+            last = m.screenStack.Pop() ' Removes screen from screenStack.
             if last.visible = true
-                last.visible = false ' hide screen
+                last.visible = false ' Hides screen.
             end if
             m.top.RemoveChild(last)
         end while
     else
-        m.screenStack.Peek().visible = false ' take current screen from screen stack but don't delete it
+        m.screenStack.Peek().visible = false ' Takes current screen from screen stack without deleting it.
     end if
 end sub
 
 function GetCurrentScreen()
-    return m.screenStack.Peek()
+    return m.screenStack.Peek() ' Returns current screen.
 end function
 
 function IsScreenInScreenStack(node as Object) as Boolean
-    ' check if screen stack contains specified node
+    ' Checks if screen stack contains specified node.
     for each screen in m.screenStack
         result = screen.IsSameNode(node)
         if result = true

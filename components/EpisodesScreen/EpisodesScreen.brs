@@ -92,7 +92,7 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
             m.categoryListGainFocus = true
             ' navigate to seasons list
             m.categoryList.SetFocus(true)
-            m.itemsList.drawFocusFeedback = true
+            m.itemsList.drawFocusFeedback = false
             result = true
         ' handle "right" key press
         else if key = "right" and m.categoryList.HasFocus() ' seasons list should be focused

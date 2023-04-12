@@ -4,9 +4,10 @@
     <interface>
         <field id="inputArgs" type="assocarray" onChange="OnInputDeepLinking" />
         <field id="launchArgs" type="assocarray" />
+        <field id="url" type="string" />
     </interface>
     <children>
-        <!-- LoadingIndicator should be visible only in case of waiting for content -->
+        <!-- LoadingIndicator should be visible only in case of waiting for content. -->
         <Label
             id="loadingIndicator"
             text="Loading..."
@@ -18,16 +19,13 @@
             visible="false"
             font="font:MediumBoldSystemFont" />
     </children>
+    <!-- Imported files using relative path. -->
     <script type="text/brightscript" uri="MainScene.brs" />
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
-    <script type="text/brightscript" uri="UILogic/VideoPlayerLogic.brs" />
     <script type="text/brightscript" uri="UILogic/ScreenStackLogic.brs" />
     <script type="text/brightscript" uri="UILogic/DetailsScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/ContentTaskLogic.brs" />
     <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/EpisodesScreenLogic.brs" />
-    <script type="text/brightscript" uri="UILogic/SubscriptionLogic.brs" />
     <script type="text/brightscript" uri="UILogic/DeepLinkingLogic.brs" />
-    <script type="text/brightscript" uri="UILogic/BookmarksLogic.brs" />
-    <script type="text/brightscript" uri="UILogic/SmartBookmarksLogic.brs" />
 </component>

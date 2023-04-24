@@ -12,7 +12,7 @@ function ContentListToSimpleNode(contentList as Object, nodeType = "ContentNode"
     return result
 end function
 
-' Helper function convert seconds to mm:ss format
+' Helper function converts seconds to mm:ss format
 ' getTime(138) returns 2:18
 function GetTime(length as Integer) as String
     minutes = (length \ 60).ToStr()
@@ -25,7 +25,22 @@ function GetTime(length as Integer) as String
     return minutes + ":" + seconds
 end function
 
-' Helper function clone node children
+' Helper function converts seconds or milliseconds to DD-MM-YY.
+function GetDate(createdDate as LongInteger) as String
+    if len(createdDate.ToStr()) = 13 then createdDate = createdDate / 1000
+    if not len(createdDate.ToStr()) = 10 then return "Date Error"
+    date = CreateObject("roDateTime")
+    date.FromSeconds(createdDate)
+    date.ToISOString()
+    day = date.GetDayOfMonth().ToStr()
+    month = date.GetMonth().ToStr()
+    year = date.GetYear().ToStr()
+    if len(day) = 1 then day = "0" + day
+    if len(month) = 1 then month = "0" + month
+    return day + "-" + month + "-" + year
+end function
+
+' Helper function clones node children
 function CloneChildren(node as Object, startItem = 0 as Integer)
     numOfChildren = node.GetChildCount() ' get number of row items
     ' populate children array only with  items started from selected one.

@@ -44,9 +44,11 @@ sub SetDetailsContent(content as Object)
     end if
     m.titleLabel.text = content.title
     m.releaseLabel.text = Left(content.releaseDate, 10)
-    buttonList = ["Play", "PDP"] ' Regular buttons to be displayed on DetailsScreen.
+    buttonList = ["Play"] ' Regular buttons to be displayed on DetailsScreen.
     if content.mediaType = "series" ' Adds a button to list episodes by season of given series asset.
-        buttonList.Push("See all episodes")
+        buttonList = ["See all episodes"]
+    else if content.mediaType = "sle"
+        buttonList.Push("PDP")
     end if
     SetButtons(buttonList)
 end sub
@@ -79,15 +81,15 @@ end sub
 function OnKeyEvent(key as String, press as Boolean) as Boolean
     result = false
     if press
-        currentItem = m.top.itemFocused ' Position of currently focused item.
+        currentItem = m.top.itemFocused ' Position of currently focused asset.
         ' Handles "left" button keypress.
         if key = "left" and m.isContentList = true
-            ' Navigates to the left item in case of "left" keypress.
+            ' Navigates to the next asset on the left.
             m.top.jumpToItem = currentItem - 1
             result = true
         ' Handles "right" button keypress.
         else if key = "right" and m.isContentList = true
-            ' Navigates to the right item in case of "right" keypress.
+            ' Navigates to the next asset on the right.
             m.top.jumpToItem = currentItem + 1
             result = true
         end if

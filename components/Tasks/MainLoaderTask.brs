@@ -6,40 +6,58 @@ sub Init()
 end sub
 
 sub GetContent()
-    ' Requests the content feed from the API.
-    xfer = CreateObject("roURLTransfer")
-    xfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
-    xfer.SetURL("https://jonathanbduval.com/roku/feeds/roku-developers-feed-v1.json")
-    rsp = xfer.GetToString()
+    contentFeed = ReadAsciiFile("pkg:/rails.json")
     rootChildren = []
 
-    ' parse the feed and build a tree of ContentNodes to populate the GridView
-    json = ParseJson(rsp)
-    if json <> invalid
+    ' Parses the feed and builds a tree of ContentNodes to populate the GridView.
+    railsJson = ParseJson(contentFeed)
+    seasonsFeed = ReadAsciiFile("pkg:/seasons.json")
+    seasonsJson = ParseJson(seasonsFeed)
+    if railsJson <> invalid
         homeRowIndex = 0
-        for each category in json
-            value = json.Lookup(category)
-            if Type(value) = "roArray" ' if parsed key value having other objects in it
-                row = {}
-                row.title = category
-                row.children = []
-                homeItemIndex = 0
-                for each item in value ' parse videos and push them to row
-                    seasons = GetSeasonData(item.seasons, homeRowIndex, homeItemIndex, item.id)
-                    itemData = GetItemData(item)
+        rails = railsJson.Lookup("rails")
+        for each rail in rails
+            row = {}
+            rail = rails.Lookup(rail)
+            row.title = rail.title
+            row.children = []
+            homeItemIndex = 0
+            railItems = rail.Lookup("items")
+            for each asset in railItems
+                if asset.type = "CATALOGUE/SERIES"
+                    relationships = seasonsJson.Lookup("relationships")
+                    items = relationships.Lookup("items")
+                    seasons = items.Lookup("data") ' Information related to every single season of an asset.
+                    seasonsData = GetSeasonData(seasons, homeRowIndex, homeItemIndex, asset.id)
+                    series = GetItemData(asset)
+                    series.children = seasonsData
+                    series.mediaType = "series"
+                    row.children.Push(series)
+                else if asset.type = "ASSET/PROGRAMME"
+                    itemData = GetItemData(asset)
                     itemData.homeRowIndex = homeRowIndex
                     itemData.homeItemIndex = homeItemIndex
-                    itemData.mediaType = category
-                    if seasons <> invalid and seasons.Count() > 0
-                        itemData.children = seasons
-                    end if
+                    itemData.mediaType = "movie"
                     row.children.Push(itemData)
-                    homeItemIndex ++
-                end for
-                rootChildren.Push(row)
-                homeRowIndex ++
-            end if
+                else if asset.type = "ASSET/EPISODE"
+                    itemData = GetItemData(asset)
+                    itemData.homeRowIndex = homeRowIndex
+                    itemData.homeItemIndex = homeItemIndex
+                    itemData.mediaType = "episode"
+                    row.children.Push(itemData)
+                else if asset.type = "ASSET/SLE"
+                    itemData = GetItemData(asset)
+                    itemData.homeRowIndex = homeRowIndex
+                    itemData.homeItemIndex = homeItemIndex
+                    itemData.mediaType = "sle"
+                    row.children.Push(itemData)
+                end if
+                homeItemIndex++
+            end for
+            rootChildren.Push(row)
+            homeRowIndex++
         end for
+
         ' set up a root ContentNode to represent rowList on the GridScreen
         contentNode = CreateObject("roSGNode", "ContentNode")
         contentNode.Update({
@@ -55,25 +73,43 @@ function GetItemData(video as Object) as Object
     item = {}
     ' populate some standard content metadata fields to be displayed on the GridScreen
     ' https://developer.roku.com/docs/developer-program/getting-started/architecture/content-metadata.md
-    if video.longDescription <> invalid
-        item.description = video.longDescription
+    if video.synopsisLong <> invalid
+        item.description = video.synopsisLong
     else
-        item.description = video.shortDescription
+        item.description = video.synopsisShort
     end if
-    item.hdPosterURL = video.thumbnail
+    if video.Lookup("images") <> invalid
+        images = video.Lookup("images")
+        for each image in images
+            if image.type = "titleArt169" or image.type = "scene169" then item.hdPosterURL = image.url
+            if image.type = "landscape" then item.hdPosterURL = image.url
+        end for
+        if item.hdPosterURL = invalid then item.hdPosterURL = images.GetChild(0).url
+    end if
     item.title = video.title
-    item.releaseDate = video.releaseDate
-    item.categories = video.genres
-    item.id = video.id
+    item.releaseDate = ""
+    createdDate = video.createdDate
+    if createdDate <> invalid
+        item.releaseDate = GetDate(createdDate)
+    end if
+    if video.createdDate = invalid and video.year <> invalid then item.releaseDate = "Year " + video.year.ToStr()
     if video.episodeNumber <> invalid
         item.episodePosition = video.episodeNumber.ToStr()
     end if
     ' populate length of content to be displayed on the GridScreen
-    if video.content <> invalid
-        item.length = video.content.duration
-        item.url = video.content.videos[0].url
-        item.streamFormat = video.content.videos[0].videoType
+    if video.runtime <> invalid
+        item.duration = video.runtime
+    else if video.duration <> invalid
+        item.duration = GetTime(video.duration.durationSeconds)
+    else if video.durationSeconds <> invalid
+        item.duration = video.durationSeconds
     end if
+    if video.Lookup("formats") <> invalid
+        formats = video.Lookup("formats")
+        hd = formats.Lookup("HD")
+        item.contentId = hd.contentId
+    end if
+    if video.providerVariantId <> invalid then item.providerVariantId = video.providerVariantId
     return item
 end function
 
@@ -81,28 +117,40 @@ function GetSeasonData(seasons as Object, homeRowIndex as Integer, homeItemIndex
     seasonsArray = []
     if seasons <> invalid
         episodeCounter = 0
+        episodesFeed = ReadAsciiFile("pkg:/episodes.json")
+        episodesJson = ParseJson(episodesFeed)
         for each season in seasons
-            if season.episodes <> invalid
-                episodes = []
-                for each episode in season.episodes
-                    episodeData = GetItemData(episode)
-                    ' save season title for element to represent it on the episodes screen
-                    episodeData.titleSeason = season.title
-                    episodeData.numEpisodes = episodeCounter
-                    episodeData.mediaType = "episode"
-                    episodeData.homeRowIndex = homeRowIndex
-                    episodeData.homeItemIndex = homeItemIndex
-                    episodeData.seriesId = seriesId
-                    episodes.Push(episodeData)
-                    episodeCounter ++
-                end for
-                seasonData = GetItemData(season)
-                ' populate season's children field with its episodes
-                ' as a result season's ContentNode will contain episode's nodes
-                seasonData.children = episodes
-                ' set content type for season object to represent it on the screen as section with episodes
-                seasonData.contentType = "section"
-                seasonsArray.Push(seasonData)
+            if season <> invalid
+                if season.id = episodesJson.id
+                    relationships = episodesJson.Lookup("relationships")
+                    items = relationships.Lookup("items")
+                    allEpisodes = items.Lookup("data")
+                    seasonEpisodes = []
+                    seasonNumber = season.attributes.seasonNumber
+                    for each episode in allEpisodes
+                            attributes = episode.Lookup("attributes")
+                            episodeData = GetItemData(attributes)
+
+                            ' save season title for element to represent it on the episodes screen
+                            episodeData.titleSeason = "Season " + seasonNumber.ToStr()
+                            episodeData.numEpisodes = episodeCounter
+                            episodeData.mediaType = "episode"
+                            episodeData.homeRowIndex = homeRowIndex
+                            episodeData.homeItemIndex = homeItemIndex
+                            episodeData.seriesId = seriesId
+
+                            seasonEpisodes.Push(episodeData)
+                            episodeCounter++
+                    end for
+                    seasonData = GetItemData(season)
+                    seasonData.title = "Season " + seasonNumber.ToStr()
+                    ' populate season's children field with its episodes
+                    ' as a result season's ContentNode will contain episode's nodes
+                    seasonData.children = seasonEpisodes
+                    ' set content type for season object to represent it on the screen as section with episodes
+                    seasonData.contentType = "section"
+                    seasonsArray.Push(seasonData)
+                end if
             end if
         end for
     end if

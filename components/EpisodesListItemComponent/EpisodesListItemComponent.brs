@@ -18,11 +18,10 @@ sub itemContentChanged() ' Invoked when episode data is retrieved.
         m.poster.uri = itemContent.hdPosterUrl
         m.title.text = itemContent.title
         divider = " | "
-        episode = "E" + itemContent.episodePosition
-        time = GetTime(itemContent.length)
+        episode = "Episode " + itemContent.episodePosition
+        time = itemContent.duration
         date = itemContent.releaseDate
-        season = itemContent.titleSeason
-        m.info.text = episode + divider + date + divider + time + divider + season
+        m.info.text = episode + divider + date + divider + time.ToStr()
         m.description.text = itemContent.description
     end if
 end sub

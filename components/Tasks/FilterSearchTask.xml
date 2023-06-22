@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="MainLoaderTask" extends="Task">
+<component name="FilterSearchTask" extends="Task">
     <interface>
         <field id="content" type="node" />
     </interface>
-    <script type="text/brightscript" uri="MainLoaderTask.brs" />
+    <script type="text/brightscript" uri="FilterSearchTask.brs" />
     <script type="text/brightscript" uri="ItemLoaderTask.brs" />
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
 </component>

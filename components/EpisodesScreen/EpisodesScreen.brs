@@ -17,7 +17,7 @@ sub OnListItemFocused(event as Object) ' invoked when episode is focused
     focusedItem = event.GetData() ' index of episode
     ' index of season which contains focused episode
     categoryIndex = m.itemToSection[focusedItem]
-
+    
     ' change focused item in seasons list
     if (categoryIndex - 1) = m.categoryList.jumpToItem
         m.categoryList.animateToItem = categoryIndex

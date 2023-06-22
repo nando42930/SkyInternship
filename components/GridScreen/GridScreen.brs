@@ -18,7 +18,7 @@ end sub
 ' to handle changes in the subject node fields caused by automatic key event handling of the node.
 function OnKeyEvent(key as String, pressed as Boolean) as Boolean
     if pressed
-        if key = "up"
+        if key = "up" or key = "back"
             m.rowList.SetFocus(false)
             m.buttonBarRowList.SetFocus(true)
             return true
@@ -27,6 +27,7 @@ function OnKeyEvent(key as String, pressed as Boolean) as Boolean
             m.rowList.SetFocus(true)
             return true
         end if
+        return false
     end if
     ' The OnKeyEvent() function must return true if the component handled the event,
     ' or false if it did not handle the event.

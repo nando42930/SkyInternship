@@ -12,6 +12,10 @@ sub Init()
     m.top.SignalBeacon("AppLaunchComplete")
 end sub
 
+sub ShowSearchScreen()
+    ShowSearchViewScreen()
+end sub
+
 ' The OnKeyEvent() function receives remote control key events.
 function OnKeyEvent(key as String, press as Boolean) as Boolean
     result = false

@@ -50,8 +50,9 @@ sub ShowChannelRSGScreen(args as Object)
             if inputField = "url" ' Checks if changed field was "url".
                 ' Sets the URL to use for the transfer request.
                 url.SetUrl(inputData)
+                url.SetRequest("GET")
                 ' Uses the HTTP POST method to send the supplied string to the current URL.
-                url.PostFromString(url.GetUrl())
+                url.GetToString()
             end if
         end if
     end while

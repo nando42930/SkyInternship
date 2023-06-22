@@ -35,35 +35,52 @@ sub OnDetailsScreenVisibilityChanged(event as Object) ' Invoked when DetailsScre
     end if
 end sub
 
-sub OnButtonSelected(event) ' Invoked when a button in DetailsScreen is pressed.
+sub OnButtonSelected(event as Object) ' Invoked when a button in DetailsScreen is pressed.
     ' Holds a pointer to the DetailsScreen node.
     details = event.GetRoSGNode()
     ' DetailsScreen content of the current displayed asset.
-    content = details.content
+    if details.content.GetChildCount() = 0
+        content = details.content
+    else
+        selectedItem = details.itemFocused ' Index of the focused item.
+        content = details.content.GetChild(selectedItem)
+    end if
     buttonIndex = event.getData() ' Index of selected button.
     button = details.buttons.getChild(buttonIndex) ' Button node.
-    selectedItem = details.itemFocused ' Index of the focused item.
     scene = m.top.GetScene() ' Scene node.
-    baseURL = "http://10.18.128.17:8060/launch/593099?contentId="
-    deeplinkURL = "https%3A%2F%2Fwww.peacocktv.com%2Fdeeplink%3FdeeplinkData%3D{"
-    contentType = chr(34) + "type" + chr(34) + "%3A" + chr(34) + UCase(content.GetChild(selectedItem).mediaType) + chr(34)
-    mediaType = "&mediaType=" + content.GetChild(selectedItem).mediaType
+
+    links = ParseJson(ReadAsciiFile("pkg:/links.json"))
+    dlBaseURL = "http://" + links["serverIP"] + links["dlBaseURL1"] + links["boxIP"] + links["dlBaseURL2"]
+    deeplinkURI = links["deeplinkURI"]
+    itemType = content.mediaType
+    typeParam = """type"":""" + itemType + """"
+    mediaType = "&mediaType=" + itemType
     ' Deeplink to Peacock Channel.
     if button.id = "play" ' Starts playback on Peacock if user has selected "Play" button.
-        ' url = "http://10.18.128.17:8060/launch/593099?contentId=" + assetURL + "&mediaType=" + content.GetChild(selectedItem).mediaType
-        action = chr(34) + "action" + chr(34) + "%3A" + chr(34) + "PLAY" + chr(34)
+        actionParam = """action"":""PLAY"""
     else if button.id = "pdp" ' Shows asset information on Peacock if user has selected "PDP" button.
-        action = chr(34) + "action" + chr(34) + "%3A" + chr(34) + "PDP" + chr(34)
+        actionParam = """action"":""PDP"""
     else if button.id = "see all episodes" ' Creates EpisodesScreen instance and shows it.
-        ShowEpisodesScreen(content.GetChild(selectedItem))
+        m.seriesContentTask = CreateObject("roSGNode", "SeriesLoaderTask") ' Creates task for feed retrieval.
+        m.seriesContentTask.content = content
+        m.seriesContentTask.ObserveField("content", "OnSeriesContentLoaded")
+        m.seriesContentTask.control = "run" ' Executes GetSeriesContent method on SeriesLoaderTask.
+        ' ShowEpisodesScreen(content.GetChild(selectedItem))
         return
     end if
-    if content.GetChild(selectedItem).providerVariantId <> invalid
-        providerVariantID = chr(34) + "pvid" + chr(34) + "%3A" + chr(34) + content.GetChild(selectedItem).providerVariantId + chr(34)
-        url = deeplinkURL + contentType + "%2C" + action + "%2C" + providerVariantID + "}" + mediaType
+
+    if content.providerVariantId <> invalid
+        providerVariantID = """pvid"":""" + content.providerVariantId + """"
+        paramsURI = typeParam + "," + actionParam + "," + providerVariantID + "}"
+        paramsURI = deeplinkURI + paramsURI
+        scene.url = dlBaseURL + paramsURI.EncodeUriComponent() + mediaType
+        ? scene.url
     else
-        assetURL = content.GetChild(selectedItem).contentId
-        url = deeplinkURL + assetURL + mediaType
+        assetURL = content.contentId
+        scene.url = dlBaseURL + assetURL + mediaType
     end if
-    scene.url = baseURL + url.EncodeUri()
+end sub
+
+sub OnSeriesContentLoaded()
+    ShowEpisodesScreen(m.seriesContentTask.content)
 end sub

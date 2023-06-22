@@ -25,6 +25,8 @@
         <field id="jumpToItem" type="integer" value="0" onChange="OnJumpToItem" alwaysNotify="true" />
         <field id="buttonColor" type="string" value="0x8080807F" />
         <field id="focusedButtonColor" type="string" value="0xFFA500FF" />
+
+        <field id="rowItemSelected" type="integer" value="0" alias="buttonBarRowList.rowItemSelected" />
     </interface>
     <children>
         <RowList
@@ -58,8 +60,8 @@
             visible="false"
             translation="[905,5]" />
             
-            <!-- <MaskGroup maskUri="pkg:/images/menuOver.9.png" maskSize="[30,30]" maskOffset="[0,0]" /> -->
-            <Poster id="search" uri="pkg:/images/SearchIcon.png" translation="[910,10]" />
+        <!-- <MaskGroup maskUri="pkg:/images/menuOver.9.png" maskSize="[30,30]" maskOffset="[0,0]" /> -->
+        <Poster id="search" uri="pkg:/images/SearchIcon.png" translation="[910,10]" />
     </children>
     <script type="text/brightscript" uri="ButtonBar.brs" />
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />

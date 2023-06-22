@@ -11,7 +11,7 @@ sub ShowScreen(node as Object)
     ' Shows and focuses new screen.
     node.visible = true
     node.SetFocus(true)
-    m.screenStack.Push(node) ' Adds new screen to the screen stack.
+    if m.screenStack <> invalid then m.screenStack.Push(node) ' Adds new screen to the screen stack.
 end sub
 
 sub CloseScreen(node as Object)

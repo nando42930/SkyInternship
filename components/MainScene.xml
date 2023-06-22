@@ -4,7 +4,8 @@
     <interface>
         <field id="inputArgs" type="assocarray" onChange="OnInputDeepLinking" />
         <field id="launchArgs" type="assocarray" />
-        <field id="url" type="string" />
+        <field id="url" type="string" alwaysNotify="true" />
+        <function name="ShowSearchScreen" />
     </interface>
     <children>
         <!-- LoadingIndicator should be visible only in case of waiting for content. -->
@@ -28,4 +29,6 @@
     <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/EpisodesScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/DeepLinkingLogic.brs" />
+    <script type="text/brightscript" uri="UILogic/SearchViewLogic.brs" />
+    <script type="text/brightscript" uri="Tasks/ItemLoaderTask.brs" />
 </component>

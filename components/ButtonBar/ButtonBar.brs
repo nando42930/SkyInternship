@@ -4,15 +4,15 @@ sub Init()
     ' Button bar nodes
     m.buttonBarRowList = m.top.FindNode("buttonBarRowList")
     m.search = m.top.FindNode("search")
+    m.buttons = ["Browse", "Movies", "TV Shows", "Sports", "WWE"]
     SetButtons()
 end sub
 
 sub SetButtons()
-    buttons = ["Browse", "Movies", "TV Shows", "Sports", "WWE"]
     result = []
     content = CreateObject("roSGNode", "ContentNode")
     ' Prepare array with button's labels
-    for each button in buttons
+    for each button in m.buttons
         result.push({title: button, id: LCase(button)})
     end for
     content = ContentListToSimpleNode(result)
@@ -65,6 +65,9 @@ function OnKeyEvent(key as String, pressed as Boolean) as Boolean
             buttonGradient.visible = false
             searchBackground.blendColor = m.top.buttonColor
             SetButtons()
+        else if key = "OK" and m.search.hasFocus()
+            scene = m.top.GetScene()
+            scene.callFunc("ShowSearchScreen")
         end if
     end if
     return false

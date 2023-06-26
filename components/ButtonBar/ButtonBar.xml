@@ -33,8 +33,8 @@
             itemComponentName="ButtonBarItemComponent"
             id="buttonBarRowList"
             numRows="1"
-            itemSize="[500, 40]"
-            rowItemSize="[[100,40]]"
+            itemSize="[650, 40]"
+            rowItemSize="[[130,40]]"
             focusBitmapUri="" />
             <!-- focusBitmapUri="pkg:/images/menuOver.9.png" -->
         <Poster

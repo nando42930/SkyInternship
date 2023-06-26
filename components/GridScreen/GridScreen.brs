@@ -3,6 +3,7 @@ sub Init()
     ' Observe "visible" field so we can know when GridScreen change visibility
     m.top.ObserveField("visible", "OnVisibleChange")
     m.buttonBarRowList = m.top.FindNode("buttonBarRowList")
+    m.search = m.top.FindNode("search")
     m.rowList = m.top.FindNode("rowList")
 end sub
 
@@ -30,6 +31,6 @@ function OnKeyEvent(key as String, pressed as Boolean) as Boolean
         return false
     end if
     ' The OnKeyEvent() function must return true if the component handled the event,
-    ' or false if it did not handle the event.
+    ' or false otherwise.
     return false
 end function

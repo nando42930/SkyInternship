@@ -66,6 +66,8 @@ function OnKeyEvent(key as String, pressed as Boolean) as Boolean
             searchBackground.blendColor = m.top.buttonColor
             SetButtons()
         else if key = "OK" and m.search.hasFocus()
+            buttonGradient.visible = false
+            searchBackground.blendColor = m.top.buttonColor
             scene = m.top.GetScene()
             scene.callFunc("ShowSearchScreen")
         end if

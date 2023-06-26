@@ -33,22 +33,20 @@ sub GetFilteredSearch()
     if searchJson <> invalid and searchResults <> invalid
         assets = [] ' roArray declaration
         for each asset in searchResults["results"]
-            itemData = {} ' roAssociativeArray declaration
-            itemData.uuid = asset.uuid
-            ut.SetUrl(infoURL1 + itemData.uuid + infoURL2)
+            ut.SetUrl(infoURL1 + asset.uuid + infoURL2)
             infoJson = ut.GetToString()
             info = ParseJson(infoJson)
-            if info <> invalid
-
+            if info[0] <> invalid
+                itemData = {} ' roAssociativeArray declaration
+                itemData.uuid = asset.uuid
                 itemData = getData(info[0]["attributes"])
                 itemData.mediaType = getType(info[0].type)
-
                 ' images = info[0]["attributes"]["images"]
                 ' for each image in images
                 '     if image.type = "titleArt169" or image.type = "scene169" then itemData.hdPosterUrl = image.url
                 ' end for
+                assets.Push(itemData)
             end if
-            assets.Push(itemData)
         end for
         ' set up a root ContentNode to represent rowList on the GridScreen
         contentNode = CreateObject("roSGNode", "ContentNode")

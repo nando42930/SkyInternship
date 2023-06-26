@@ -13,10 +13,13 @@ sub GetFilteredContent()
     tvShowsURL = links["tvShowsURL"]
     sportsURL = links["sportsURL"]
     wweURL = links["wweURL"]
-
+    railsURL = links["railsURL"]
+    
     button = m.top.content.filter
     
-    if button = "Movies"
+    if button = "Browse"
+        sectionURL = railsURL
+    else if button = "Movies"
         sectionURL = moviesURL
     else if button = "TV Shows"
         sectionURL = tvShowsURL
@@ -48,16 +51,17 @@ sub GetFilteredContent()
         rails = section["data"]["group"]["rails"]
         for each rail in rails
             row = {}
-            row.title = rail.title
+            row.TITLE = rail.title
             row.children = []
             railItems = rail["items"]
             homeItemIndex = 0
             if railItems <> invalid
                 for each asset in railItems
-                    if asset.type <> "CATALOGUE/LINK" and asset.type <> "CATALOGUE/COLLECTION" and asset.type <> "ASSET/LINEAR_SLOT"
+                    if asset.type <> "CATALOGUE/LINK" and asset.type <> "CATALOGUE/COLLECTION" and asset.type <> "ASSET/LINEAR_SLOT" and asset.type <> "ASSET/SHORTFORM/THEATRICAL"
                         itemData = GetItemData(asset)
                         itemData.homeRowIndex = homeRowIndex
                         itemData.homeItemIndex = homeItemIndex
+                        itemData.mediaType = getType(asset.type)
                         row.children.Push(itemData)
                         homeItemIndex++
                     end if

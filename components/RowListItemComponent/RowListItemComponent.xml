@@ -9,10 +9,10 @@
         <Poster
             id="poster"
             loadDisplayMode="scaleToFill"
-            width="320"
-            height="200"
-            loadWidth="320"
-            loadHeight="200"
+            width="300"
+            height="170"
+            loadWidth="300"
+            loadHeight="170"
         />
     </children>
     <script type="text/brightscript" uri="RowListItemComponent.brs" />

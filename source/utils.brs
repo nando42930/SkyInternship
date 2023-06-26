@@ -148,7 +148,7 @@ function getData(video as Object) as Object
     else if video.durationSeconds <> invalid
         item.duration = video.durationSeconds
     end if
-    if video["formats"] <> invalid then item.contentId = video["formats"]["HD"].contentId
+    if video["formats"]["HD"].contentId <> invalid then item.contentId = video["formats"]["HD"].contentId
     if video.providerVariantId <> invalid then item.providerVariantId = video.providerVariantId
     if video.providerSeriesId <> invalid then item.providerSeriesId = video.providerSeriesId
     return item

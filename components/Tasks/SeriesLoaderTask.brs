@@ -36,18 +36,35 @@ sub GetSeriesContent()
     '     homeItemIndex++
     ' end if
 
+    ' seasons = series["relationships"]["items"]["data"] ' Information related to every single season of an asset.
+    ' ? "============> Content Node Creation"
+    ' content = createObject("roSGNode", "SeriesContentNode")
+    ' ? "============> Content Node GetSeasonData"
+    ' seasonData = GetSeasonData(seasons, asset.homeRowIndex, asset.homeItemIndex, series.id, ut)
+    ' ? "============> Content Push"
+    ' content.setField("seasons", seasonData)
+    ' ? "============> Content Set"
+    ' m.top.content = content
+
     seasons = series["relationships"]["items"]["data"] ' Information related to every single season of an asset.
-    seasonsData = GetSeasonData(seasons, asset.homeRowIndex, asset.homeItemIndex, series.id, ut)
-    asset.children = seasonsData
-    m.top.content = asset
+    if asset.homeItemIndex = invalid or asset.homeRowIndex = invalid
+        seasons = GetSeasonData(seasons, 0, 0, series.id, ut)
+    else
+        seasons = GetSeasonData(seasons, asset.homeRowIndex, asset.homeItemIndex, series.id, ut)
+    end if
+    contentNode = CreateObject("roSGNode", "ContentNode")
+    contentNode.Update(asset, false)
+    contentNode.Update({children: seasons}, true)
+    m.top.content = contentNode
 end sub
 
 
 
-function GetSeasonData(seasons as Object, homeRowIndex = 0 as Integer, homeItemIndex = 0 as Integer, seriesId as String, ut as Object) as Object
+function GetSeasonData(seasons as Object, homeRowIndex as Integer, homeItemIndex as Integer, seriesId as String, ut as Object) as Object
     ' Base and parameters URL to fetch episodes data of a season by its providerSeriesId field.
-    episodesBaseURL = "https://atom.peacocktv.com/adapter-calypso/v3/query/node/"
-    episodesParamsURL = "?represent=(items%2Cnext_items[take%3D1])&features=upcoming"
+    links = ParseJson(ReadAsciiFile("pkg:/links.json"))
+    episodesBaseURL = links["episodesBaseURL"]
+    episodesParamsURL = links["episodesParamsURL"]
 
     seasonsArray = []
     if seasons <> invalid
@@ -59,32 +76,27 @@ function GetSeasonData(seasons as Object, homeRowIndex = 0 as Integer, homeItemI
             episodes = ParseJson(episodesJson)
             episodeCounter = 0
             if season <> invalid and season.id = episodes.id
-                episodes = episodes["relationships"]["items"]["data"]
-                seasonEpisodes = []
+                seasonData = {}
+                seasonData.children = []
                 seasonNumber = season.attributes.seasonNumber
+                episodes = episodes["relationships"]["items"]["data"]
                 for each episode in episodes
-                        attributes = episode["attributes"]
-                        episodeData = GetItemData(attributes)
-
-                        ' save season title for element to represent it on the episodes screen
-                        episodeData.titleSeason = "Season " + seasonNumber.ToStr()
-                        episodeData.numEpisodes = episodeCounter
-                        episodeData.mediaType = "episode"
-                        episodeData.homeRowIndex = homeRowIndex
-                        episodeData.homeItemIndex = homeItemIndex
-                        episodeData.seriesId = seriesId
-
-                        seasonEpisodes.Push(episodeData)
-                        episodeCounter++
+                    episodeData = GetItemData(episode["attributes"])
+                    ' save season title for element to represent it on the episodes screen
+                    ' episodeData.titleSeason = "Season " + seasonNumber.ToStr()
+                    ' episodeData.numEpisodes = episodeCounter
+                    episodeData.mediaType = "episode"
+                    episodeData.homeRowIndex = homeRowIndex
+                    episodeData.homeItemIndex = homeItemIndex
+                    episodeData.seriesId = seriesId
+                    seasonData.children.Push(episodeData)
+                    episodeCounter++
                 end for
-                seasonData = GetItemData(season)
                 seasonData.title = "Season " + seasonNumber.ToStr()
-                ' populate season's children field with its episodes
-                ' as a result season's ContentNode will contain episode's nodes
-                seasonData.children = seasonEpisodes
                 ' set content type for season object to represent it on the screen as section with episodes
-                seasonData.contentType = "section"
-                seasonsArray.Push(seasonData)
+                seasonData.AddReplace("contentType", "section")
+                ' seasonData.contentType = "section"
+                if seasonData.children.Count() > 0 then seasonsArray.Push(seasonData)
             end if
         end for
     end if

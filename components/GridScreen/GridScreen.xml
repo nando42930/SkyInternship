@@ -13,7 +13,13 @@
     </interface>
     <children>
         <LayoutGroup layoutDirection="horiz" vertAlignment="center" translation="[0,51]" itemSpacings="189">
-            <Poster uri="pkg:/images/PeacockLogo.png" />
+            <Poster
+                uri="pkg:/images/PeacockLogo.png"
+                width="100"
+                height="100"
+                loadWidth="100"
+                loadHeight="100"
+            />
             <LayoutGroup layoutDirection="horiz" vertAlignment="bottom">
                 <ButtonBar id="buttonBar" />
             </LayoutGroup>
@@ -22,12 +28,13 @@
             itemComponentName="RowListItemComponent"
             id="rowList"
             numRows="3"
-            translation="[325,100]"
-            rowitemSize="[[320, 200]]"
-            rowItemSpacing="[[5, 0]]"
-            itemSize="[960, 205]"
+            translation="[30,105]"
+            rowitemSize="[[300, 170]]"
+            rowItemSpacing="[[5, 5]]"
+            itemSize="[1280, 205]"
             vertFocusAnimationStyle="floatingFocus"
-            focusBitmapUri="pkg:/images/TileBorderHighlight720p.9.png" />
+            focusBitmapUri="pkg:/images/TileBorderHighlight720p.9.png"
+            showRowLabel="[true]" />
     </children>
     <script type="text/brightscript" uri="GridScreen.brs" />
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />

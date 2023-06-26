@@ -14,22 +14,22 @@
     <children>
         <Rectangle
             id="buttonBackground"
-            width="100"
+            width="130"
             height="40"
             color="0x8080807F" />
         <Poster
             id="buttonGradient"
             uri="pkg:/images/ButtonGradient.png"
-            width="100"
+            width="130"
             height="40"
-            loadWidth="100"
+            loadWidth="130"
             loadHeight="40"
             loadDisplayMode="scaleToFit"
             blendColor="0xFF8C00FF"
             visible="false" />
         <Label
             id="buttonLabel"
-            width="100"
+            width="130"
             height="40"
             color="0xFFFFFF7F"
             font="font:SmallestBoldSystemFont"

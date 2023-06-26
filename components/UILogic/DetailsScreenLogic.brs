@@ -53,6 +53,7 @@ sub OnButtonSelected(event as Object) ' Invoked when a button in DetailsScreen i
     dlBaseURL = "http://" + links["serverIP"] + links["dlBaseURL1"] + links["boxIP"] + links["dlBaseURL2"]
     deeplinkURI = links["deeplinkURI"]
     itemType = content.mediaType
+    if itemType = "sle" then itemType = UCase(itemType)
     typeParam = """type"":""" + itemType + """"
     mediaType = "&mediaType=" + itemType
     ' Deeplink to Peacock Channel.
@@ -63,7 +64,7 @@ sub OnButtonSelected(event as Object) ' Invoked when a button in DetailsScreen i
     else if button.id = "see all episodes" ' Creates EpisodesScreen instance and shows it.
         m.seriesContentTask = CreateObject("roSGNode", "SeriesLoaderTask") ' Creates task for feed retrieval.
         m.seriesContentTask.content = content
-        m.seriesContentTask.ObserveField("content", "OnSeriesContentLoaded")
+        m.seriesContentTask.ObserveFieldScoped("content", "OnSeriesContentLoaded")
         m.seriesContentTask.control = "run" ' Executes GetSeriesContent method on SeriesLoaderTask.
         ' ShowEpisodesScreen(content.GetChild(selectedItem))
         return

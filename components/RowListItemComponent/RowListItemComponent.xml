@@ -2,18 +2,18 @@
 
 <component name="RowListItemComponent" extends="Group" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
     <interface>
-      <field id="itemContent" type="node" onChange="OnContentSet" />
+        <field id="itemContent" type="node" onChange="OnContentSet" />
     </interface>
-    <script type="text/brightscript" uri="RowListItemComponent.brs" />
     <children>
         <!-- Set loadWidth/loadHeight and loadDisplayMode for better performance -->
         <Poster
             id="poster"
             loadDisplayMode="scaleToFill"
-            width="320"
-            height="180"
-            loadWidth="320"
-            loadHeight="180"
+            width="300"
+            height="170"
+            loadWidth="300"
+            loadHeight="170"
         />
     </children>
+    <script type="text/brightscript" uri="RowListItemComponent.brs" />
 </component>

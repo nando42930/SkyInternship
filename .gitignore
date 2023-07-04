@@ -15,5 +15,6 @@
 
 # Others
 **/.DS_Store
-out
+out/
 .git
+*.json

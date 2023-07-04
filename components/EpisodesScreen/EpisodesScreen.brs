@@ -1,6 +1,4 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
- ' entry point of EpisodesScreen
+' entry point of EpisodesScreen
 function Init()
     ' observe "visible" so we can know when EpisodesScreen change visibility
     m.top.ObserveField("visible", "OnVisibleChange")
@@ -19,7 +17,7 @@ sub OnListItemFocused(event as Object) ' invoked when episode is focused
     focusedItem = event.GetData() ' index of episode
     ' index of season which contains focused episode
     categoryIndex = m.itemToSection[focusedItem]
-
+    
     ' change focused item in seasons list
     if (categoryIndex - 1) = m.categoryList.jumpToItem
         m.categoryList.animateToItem = categoryIndex

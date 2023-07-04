@@ -1,88 +1,87 @@
-' ********** Copyright 2020 Roku Corp.  All Rights Reserved. **********
-
+' Invoked by GridScreenLogic.
 sub ShowDetailsScreen(content as Object, selectedItem as Integer)
-    ' create new instance of details screen
+    ' Creates a new instance of DetailsScreen.
     detailsScreen = CreateObject("roSGNode", "DetailsScreen")
+    ' Content of the assets present in a row.
     detailsScreen.content = content
-    detailsScreen.jumpToItem = selectedItem ' set index of item which should be focused
+    ' Sets index of item to be focused.
+    detailsScreen.jumpToItem = selectedItem
+    ' Observes DetailsScreen visibility.
     detailsScreen.ObserveField("visible", "OnDetailsScreenVisibilityChanged")
+    ' Observer to be aware of when a button is selected on DetailsScreen.
     detailsScreen.ObserveField("buttonSelected", "OnButtonSelected")
+    ' Displays DetailsScreen.
     ShowScreen(detailsScreen)
 end sub
 
-sub OnDetailsScreenVisibilityChanged(event as Object) ' invoked when DetailsScreen "visible" field is changed
+sub OnDetailsScreenVisibilityChanged(event as Object) ' Invoked when DetailsScreen "visible" field is changed.
+    ' Retrieves the new "visible" value at the time of the change.
     visible = event.GetData()
+    ' Holds a pointer to the DetailsScreen node.
     detailsScreen = event.GetRoSGNode()
+    ' Retrieves current screen node.
     currentScreen = GetCurrentScreen()
+    ' Retrieves current screen node subtype.
     screenType = currentScreen.SubType()
     if visible = false
         if screenType = "GridScreen"
-            ' update GridScreen's focus when navigate back from DetailsScreen
+            ' Updates GridScreen's focus when navigating back from DetailsScreen.
             currentScreen.jumpToRowItem = [m.selectedIndex[0], detailsScreen.itemFocused]
         else if screenType = "EpisodesScreen"
-            ' update EpisodesScreen's focus when navigate back from DetailsScreen
+            ' Updates EpisodesScreen's focus when navigating back from DetailsScreen.
             content = detailsScreen.content.GetChild(detailsScreen.itemFocused)
             currentScreen.jumpToItem = content.numEpisodes
         end if
     end if
 end sub
 
-sub OnButtonSelected(event) ' invoked when button in DetailsScreen is pressed
+sub OnButtonSelected(event as Object) ' Invoked when a button in DetailsScreen is pressed.
+    ' Holds a pointer to the DetailsScreen node.
     details = event.GetRoSGNode()
-    content = details.content
-    buttonIndex = event.getData() ' index of selected button
-    button = details.buttons.getChild(buttonIndex)
-    selectedItem = details.itemFocused
-    if button.id = "play" ' check if "Play" button is pressed
-        ' create Video node and start playback
-        HandlePlayButton(content, selectedItem)
-    else if button.id = "see all episodes" ' check if "See all episodes" button is pressed
-        ' create EpisodesScreen instance and show it
-        ShowEpisodesScreen(content.GetChild(selectedItem))
-    else if button.id = "continue"
-        HandlePlayButton(content, selectedItem, true)
+    ' DetailsScreen content of the current displayed asset.
+    if details.content.GetChildCount() = 0
+        content = details.content
+    else
+        selectedItem = details.itemFocused ' Index of the focused item.
+        content = details.content.GetChild(selectedItem)
+    end if
+    buttonIndex = event.getData() ' Index of selected button.
+    button = details.buttons.getChild(buttonIndex) ' Button node.
+    scene = m.top.GetScene() ' Scene node.
+
+    links = ParseJson(ReadAsciiFile("pkg:/links.json"))
+    dlBaseURL = "http://" + links["serverIP"] + links["dlBaseURL1"] + links["boxIP"] + links["dlBaseURL2"]
+    deeplinkURI = links["deeplinkURI"]
+    itemType = content.mediaType
+    if itemType = "sle" then itemType = UCase(itemType)
+    typeParam = """type"":""" + itemType + """"
+    mediaType = "&mediaType=" + itemType
+    ' Deeplink to Peacock Channel.
+    if button.id = "play" ' Starts playback on Peacock if user has selected "Play" button.
+        actionParam = """action"":""PLAY"""
+    else if button.id = "pdp" ' Shows asset information on Peacock if user has selected "PDP" button.
+        actionParam = """action"":""PDP"""
+    else if button.id = "see all episodes" ' Creates EpisodesScreen instance and shows it.
+        m.seriesContentTask = CreateObject("roSGNode", "SeriesLoaderTask") ' Creates task for feed retrieval.
+        m.seriesContentTask.content = content
+        m.seriesContentTask.ObserveFieldScoped("content", "OnSeriesContentLoaded")
+        m.seriesContentTask.control = "run" ' Executes GetSeriesContent method on SeriesLoaderTask.
+        ' ShowEpisodesScreen(content.GetChild(selectedItem))
+        return
+    end if
+
+    if content.providerVariantId <> invalid
+        providerVariantID = """pvid"":""" + content.providerVariantId + """"
+        paramsURI = typeParam + "," + actionParam + "," + providerVariantID + "}"
+        paramsURI = deeplinkURI + paramsURI
+        scene.url = dlBaseURL + paramsURI.EncodeUriComponent() + mediaType
+        ? scene.url
+    else
+        assetURL = content.contentId
+        scene.url = dlBaseURL + assetURL + mediaType
     end if
 end sub
 
-sub HandlePlayButton(content as Object, selectedItem as Integer, isResume = false as Boolean)
-    itemContent = content.GetChild(selectedItem)
-    ' if content child is serial with seasons
-    ' we will set all episodes of serial to playlist
-    if itemContent.mediaType = "series"
-        children = []
-        ' clone all episodes of easch season
-        for each season in itemContent.getChildren(-1, 0)
-            children.Append(CloneChildren(season))
-        end for
-        ' create new node and set all episodes of serial
-        node = CreateObject("roSGNode", "ContentNode")
-        node.id = itemContent.id
-        node.Update({ children: children }, true)
-        index = 0
-        if isResume = true
-            smartBookmarks = MasterChannelSmartBookmarks()
-            ' episodeId contains id of the episode which should be played
-            episodeId = smartBookmarks.GetSmartBookmarkForSeries(itemContent.id)
-            if episodeId <> invalid and episodeId <> ""
-                episode = FindNodeById(content, episodeId)
-                if episode <> invalid
-                    index = episode.numEpisodes
-                end if
-            end if
-        else
-            episode = node.getChild(0)
-            episode.bookmarkPosition = 0
-        end if
-        ' create a Video node and start playback
-        CheckSubscriptionAndStartPlayback(node, index, true)
-    else
-        if isResume = false
-            itemContent.bookmarkPosition = 0
-        end if
-        CheckSubscriptionAndStartPlayback(content, selectedItem)
-    end if
-    if m.selectedIndex = invalid
-        m.selectedIndex = [0, 0]
-    end if
-    m.selectedIndex[1] = selectedItem ' store index of selected item
+sub OnSeriesContentLoaded()
+    ShowEpisodesScreen(m.seriesContentTask.content)
 end sub
